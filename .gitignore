@@ -1,0 +1,10 @@
+flask-backend/.venv/
+flask-backend/.env
+__pycache__/
+*.pyc
+instance/
+
+react-frontend/node_modules/
+react-frontend/dist/
+
+*:Zone.Identifier
