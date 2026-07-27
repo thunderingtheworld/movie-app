@@ -60,6 +60,7 @@ def get_movies():
                 else None
             ),
             "rating": movie["vote_average"],
+            "vote_count": movie["vote_count"],
             "description": movie["overview"],
             "poster_path": movie["poster_path"],
         }
