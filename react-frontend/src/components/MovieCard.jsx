@@ -23,22 +23,44 @@ function getVoteCountClasses(voteCount) {
   return "font-normal text-gray-500";
 }
 
-export default function MovieCard({ movie }) {
+export default function MovieCard({
+  movie,
+  wantToWatch,
+  onToggleWantToWatch,
+}) {
   return (
-    <article className="flex overflow-hidden rounded-lg border border-gray-200 shadow-sm">
-      {movie.poster_path !== null
-      ? (
-          <img
-            className="w-1/3 object-cover"
-            src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-            alt={`${movie.title} poster`}
-          />
-        )
-      : (
-        <div className="flex w-1/3 items-center justify-center bg-gray-100 p-3 text-center text-sm text-gray-500">
-          No poster available
-        </div>
-      )}
+    <article
+      className={
+        wantToWatch
+          ? `
+              flex overflow-hidden rounded-lg border border-green-300
+              bg-green-50 shadow-sm transition
+            `
+          : `
+              flex overflow-hidden rounded-lg border border-gray-200
+              bg-white shadow-sm transition
+            `
+      }
+    >
+      <div className="relative w-1/3">
+        {movie.poster_path !== null
+          ? (
+              <img
+                className="h-full w-full object-cover"
+                src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+                alt={`${movie.title} poster`}
+              />
+            )
+          : (
+              <div className="flex h-full items-center justify-center bg-gray-100 p-3 text-center text-sm text-gray-500">
+                No poster available
+              </div>
+            )}
+
+        {wantToWatch
+          ? <div className="absolute inset-0 bg-green-500/20" />
+          : null}
+      </div>
 
       <div className="flex w-2/3 flex-col gap-2 p-4">
         <h2 className="text-xl font-semibold">
@@ -74,14 +96,23 @@ export default function MovieCard({ movie }) {
         </p>
 
         <button 
-          className="
-            mt-auto self-end rounded border border-gray-300 bg-gray-100
-            px-3 py-2 text-gray-600 transition
-            hover:border-green-500 hover:bg-green-50 hover:text-green-700
-            active:scale-95 active:bg-green-100
-          "
+          className={
+            wantToWatch
+              ? `
+                  mt-auto self-end rounded border border-green-600 bg-green-600
+                  px-3 py-2 text-white transition
+                  hover:bg-green-700 active:scale-95
+                `
+              : `
+                  mt-auto self-end rounded border border-gray-300 bg-gray-100
+                  px-3 py-2 text-gray-600 transition
+                  hover:border-green-500 hover:bg-green-50 hover:text-green-700
+                  active:scale-95 active:bg-green-100
+                `
+          }
+          onClick={() => onToggleWantToWatch(movie.id)}
         >
-          Want to watch
+          {wantToWatch ? "✓ Saved" : "♡ Save"}
         </button>
       </div>
     </article>

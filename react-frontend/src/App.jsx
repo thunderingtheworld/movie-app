@@ -1,9 +1,23 @@
 import { useEffect, useState } from "react";
 import MovieCard from "./components/MovieCard";
 
-
 export default function MovieList() {
   const [movies, setMovies] = useState([]);
+  const [wantedMovieIds, setWantedMovieIds] = useState([]);
+
+  function toggleWantToWatch(movieId) {
+    if (wantedMovieIds.includes(movieId)) {
+      setWantedMovieIds(
+        wantedMovieIds.filter(id => id !== movieId)
+      );
+      return;
+    }
+
+    setWantedMovieIds([
+      ...wantedMovieIds,
+      movieId,
+    ]);
+  }
 
   useEffect(() => {
     async function loadMovies() {
@@ -22,7 +36,12 @@ export default function MovieList() {
 
       <section className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {movies.map(movie => (
-          <MovieCard key={movie.id} movie={movie} />
+          <MovieCard
+            key={movie.id}
+            movie={movie}
+            wantToWatch={wantedMovieIds.includes(movie.id)}
+            onToggleWantToWatch={toggleWantToWatch}
+          />
         ))}
       </section>
     </main>
