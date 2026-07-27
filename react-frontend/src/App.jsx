@@ -1,32 +1,31 @@
 import { useEffect, useState } from "react";
 
+function formatVoteCount(voteCount) {
+  if (voteCount >= 1_000_000) {
+    return `${(voteCount / 1_000_000).toFixed(1)}m`;
+  }
+
+  if (voteCount >= 1_000) {
+    return `${(voteCount / 1_000).toFixed(1)}k`;
+  }
+
+  return voteCount.toLocaleString();
+}
+
+// text gets more prominent as confidence increases:
+function getVoteCountClasses(voteCount) {
+  if (voteCount >= 5_000) {
+    return "font-semibold text-gray-700";
+  }
+
+  if (voteCount >= 1_000) {
+    return "font-medium text-gray-600";
+  }
+
+  return "font-normal text-gray-500";
+}
+
 function MovieCard({ movie }) {
-
-  function formatVoteCount(voteCount) {
-    if (voteCount >= 1_000_000) {
-      return `${(voteCount / 1_000_000).toFixed(1)}m`;
-    }
-
-    if (voteCount >= 1_000) {
-      return `${(voteCount / 1_000).toFixed(1)}k`;
-    }
-
-    return voteCount.toLocaleString();
-  }
-
-  // text gets more prominent as confidence increases:
-  function getVoteCountClasses(voteCount) {
-    if (voteCount >= 5_000) {
-      return "font-semibold text-gray-700";
-    }
-
-    if (voteCount >= 1_000) {
-      return "font-medium text-gray-600";
-    }
-
-    return "font-normal text-gray-500";
-  }
-
   return (
     <article className="flex overflow-hidden rounded-lg border border-gray-200 shadow-sm">
       {movie.poster_path !== null
@@ -37,7 +36,11 @@ function MovieCard({ movie }) {
             alt={`${movie.title} poster`}
           />
         )
-      : null}
+      : (
+        <div className="flex w-1/3 items-center justify-center bg-gray-100 p-3 text-center text-sm text-gray-500">
+          No poster available
+        </div>
+      )}
 
       <div className="flex w-2/3 flex-col gap-2 p-4">
         <h2 className="text-xl font-semibold">
@@ -66,7 +69,7 @@ function MovieCard({ movie }) {
           <span className="mx-2 text-gray-400">·</span>
 
           <span className="text-sm text-gray-500">
-            <span className={`${getVoteCountClasses(movie.vote_count)}`}>
+            <span className={getVoteCountClasses(movie.vote_count)}>
               {formatVoteCount(movie.vote_count)}
             </span> votes
           </span>
