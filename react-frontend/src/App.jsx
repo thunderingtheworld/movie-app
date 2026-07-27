@@ -1,30 +1,73 @@
 import { useEffect, useState } from "react";
 
 function MovieCard({ movie }) {
-  const maxDescriptionLength = 180;
 
-  let description = movie.description;
+  function formatVoteCount(voteCount) {
+    if (voteCount >= 1_000_000) {
+      return `${(voteCount / 1_000_000).toFixed(1)}m`;
+    }
 
-  if (description.length > maxDescriptionLength) {
-    description = `${description.slice(0, maxDescriptionLength)}...`;
+    if (voteCount >= 1_000) {
+      return `${(voteCount / 1_000).toFixed(1)}k`;
+    }
+
+    return voteCount.toLocaleString();
   }
 
   return (
-    <article className="rounded-lg border border-gray-200 p-5 shadow-sm">
-      <h2 className="mb-3 flex items-start justify-between gap-3 text-xl font-semibold">
-        {movie.title}
-        {movie.year !== null && movie.year !== undefined
-          ? (<span className="shrink-0 font-light text-gray-500">{movie.year}</span>)
-          : null}
-      </h2>
+    <article className="flex overflow-hidden rounded-lg border border-gray-200 shadow-sm">
+      {movie.poster_path !== null
+      ? (
+          <img
+            className="w-1/3 object-cover"
+            src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+            alt={`${movie.title} poster`}
+          />
+        )
+      : null}
 
-      <p className="mb-3">
-        <span className="font-medium">{movie.rating.toFixed(1)}</span>
-        <span className="ml-2 text-sm font-light text-gray-500">
-          {movie.vote_count.toLocaleString()} votes
-        </span>
-      </p>
-      <p className="text-gray-600">{description}</p>
+      <div className="flex w-2/3 flex-col gap-2 p-4">
+        <h2 className="text-xl font-semibold">
+          {movie.title}
+        </h2>
+
+        {movie.year !== null && movie.year !== undefined
+          ? (
+              <p className="font-light text-gray-500">
+                {movie.year}
+              </p>
+            )
+          : null}
+
+        <p className="mb-4">
+          <span className="text-yellow-500">★</span>
+
+          <span className="ml-1 font-semibold">
+            {movie.rating.toFixed(1)}
+          </span>
+
+          <span className="font-light text-gray-500">
+            {" "}/ 10
+          </span>
+
+          <span className="mx-2 text-gray-400">·</span>
+
+          <span className="text-sm text-gray-500">
+            {formatVoteCount(movie.vote_count)} votes
+          </span>
+        </p>
+
+        <button 
+          className="
+            mt-auto self-end rounded border border-gray-300 bg-gray-100
+            px-3 py-2 text-gray-600 transition
+            hover:border-green-500 hover:bg-green-50 hover:text-green-700
+            active:scale-95 active:bg-green-100
+          "
+        >
+          Want to watch
+        </button>
+      </div>
     </article>
   )
 }
