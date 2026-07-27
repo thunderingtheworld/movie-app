@@ -14,6 +14,19 @@ function MovieCard({ movie }) {
     return voteCount.toLocaleString();
   }
 
+  // text gets more prominent as confidence increases:
+  function getVoteCountClasses(voteCount) {
+    if (voteCount >= 5_000) {
+      return "font-semibold text-gray-700";
+    }
+
+    if (voteCount >= 1_000) {
+      return "font-medium text-gray-600";
+    }
+
+    return "font-normal text-gray-500";
+  }
+
   return (
     <article className="flex overflow-hidden rounded-lg border border-gray-200 shadow-sm">
       {movie.poster_path !== null
@@ -46,14 +59,16 @@ function MovieCard({ movie }) {
             {movie.rating.toFixed(1)}
           </span>
 
-          <span className="font-light text-gray-500">
+          <span className="text-sm font-light text-gray-500">
             {" "}/ 10
           </span>
 
           <span className="mx-2 text-gray-400">·</span>
 
           <span className="text-sm text-gray-500">
-            {formatVoteCount(movie.vote_count)} votes
+            <span className={`${getVoteCountClasses(movie.vote_count)}`}>
+              {formatVoteCount(movie.vote_count)}
+            </span> votes
           </span>
         </p>
 
