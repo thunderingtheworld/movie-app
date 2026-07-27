@@ -2,15 +2,17 @@ import { useEffect, useState } from "react";
 
 function MovieCard({ movie }) {
   return (
-    <article>
-      <h2>
+    <article className="rounded-lg border border-gray-200 p-5 shadow-sm">
+      <h2 className="mb-3 text-xl font-semibold">
         {movie.title} {movie.year !== null && movie.year !== undefined
           ? `(${movie.year})`
           : null}
       </h2>
 
-      <p>Rating: {movie.rating.toFixed(1)}</p>
-      <p>{movie.description}</p>
+      <p className="mb-3 font-medium">
+        Rating: {movie.rating.toFixed(1)}
+      </p>
+      <p className="text-gray-600">{movie.description}</p>
     </article>
   )
 }
@@ -30,12 +32,14 @@ export default function MovieList() {
   }, []);
 
   return (
-    <main>
-      <h1>Movies</h1>
+    <main className="mx-auto max-w-7xl p-6">
+      <h1 className="mb-6 text-3xl font-bold">Movies</h1>
 
-      {movies.map(movie => (
-        <MovieCard key={movie.id} movie={movie} />
-      ))}
+      <section className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {movies.map(movie => (
+          <MovieCard key={movie.id} movie={movie} />
+        ))}
+      </section>
     </main>
   );
 }
