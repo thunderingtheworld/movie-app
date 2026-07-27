@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import MovieCard from "./components/MovieCard";
 
 function MovieList({
+  title,
   movies,
   wantedMovieIds,
   onToggleWantToWatch
@@ -10,7 +11,7 @@ function MovieList({
 
   return (
     <main className="mx-auto max-w-7xl p-6">
-      <h1 className="mb-6 text-3xl font-bold">New releases</h1>
+      <h1 className="mb-6 text-3xl font-bold">{title}</h1>
 
       <section className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {movies.map(movie => (
@@ -73,6 +74,7 @@ export default function App() {
           path="/"
           element={
             <MovieList
+              title="New releases"
               movies={movies}
               wantedMovieIds={wantedMovieIds}
               onToggleWantToWatch={toggleWantToWatch}
@@ -83,20 +85,12 @@ export default function App() {
         <Route
           path="/watchlist"
           element={
-            <main className="mx-auto max-w-7xl p-6">
-              <h1 className="mb-6 text-3xl font-bold">Watchlist</h1>
-
-              <section className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                {wantedMovies.map(movie => (
-                  <MovieCard
-                    key={movie.id}
-                    movie={movie}
-                    wantToWatch={true}
-                    onToggleWantToWatch={toggleWantToWatch}
-                  />
-                ))}
-              </section>
-            </main>
+            <MovieList
+              title="Watchlist"
+              movies={wantedMovies}
+              wantedMovieIds={wantedMovieIds}
+              onToggleWantToWatch={toggleWantToWatch}
+            />
           }
         />
       </Routes>
