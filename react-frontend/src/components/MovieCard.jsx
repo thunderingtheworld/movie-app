@@ -34,7 +34,7 @@ export default function MovieCard({
         wantToWatch
           ? `
               flex overflow-hidden rounded-lg border border-green-300
-              bg-green-50 shadow-sm transition
+              bg-green-50 opacity-85 shadow-none transition
             `
           : `
               flex overflow-hidden rounded-lg border border-gray-200
@@ -58,7 +58,7 @@ export default function MovieCard({
             )}
 
         {wantToWatch
-          ? <div className="absolute inset-0 bg-green-500/20" />
+          ? <div className="absolute inset-0 bg-gray-900/15" />
           : null}
       </div>
 
