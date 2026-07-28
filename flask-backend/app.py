@@ -1,4 +1,5 @@
 import os
+import sqlite3
 
 import requests
 from dotenv import load_dotenv
@@ -11,6 +12,14 @@ app = Flask(__name__)
 CORS(app) # TODO: Restrict allowed origins before deployment.
 
 TMDB_TOKEN = os.getenv("TMDB_TOKEN")
+app.config["DATABASE"] = os.path.join(app.instance_path, "movie-app.sqlite3")
+
+
+def get_db():
+    os.makedirs(app.instance_path, exist_ok=True)
+    database = sqlite3.connect(app.config["DATABASE"])
+    database.execute("CREATE TABLE IF NOT EXISTS watchlist (movie_id INTEGER PRIMARY KEY)")
+    return database
 
 
 @app.get("/")
@@ -68,6 +77,29 @@ def get_movies():
     ]
 
     return jsonify(movies)
+
+
+@app.get("/api/watchlist")
+def get_watchlist():
+    with get_db() as database:
+        rows = database.execute("SELECT movie_id FROM watchlist ORDER BY movie_id").fetchall()
+    return jsonify([row[0] for row in rows])
+
+
+@app.post("/api/watchlist/<int:movie_id>")
+def add_to_watchlist(movie_id):
+    if movie_id <= 0:
+        return jsonify({"error": "movie_id must be a positive integer"}), 400
+    with get_db() as database:
+        result = database.execute("INSERT OR IGNORE INTO watchlist (movie_id) VALUES (?)", (movie_id,))
+    return jsonify({"movie_id": movie_id}), 201 if result.rowcount == 1 else 200
+
+
+@app.delete("/api/watchlist/<int:movie_id>")
+def remove_from_watchlist(movie_id):
+    with get_db() as database:
+        database.execute("DELETE FROM watchlist WHERE movie_id = ?", (movie_id,))
+    return "", 204
 
 
 if __name__ == "__main__":
