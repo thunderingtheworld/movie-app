@@ -6,8 +6,20 @@ export default function App() {
   const [movies, setMovies] = useState([]);
   const [wantedMovieIds, setWantedMovieIds] = useState([]);
 
-  function toggleWantToWatch(movieId) {
-    if (wantedMovieIds.includes(movieId)) {
+  async function toggleWantToWatch(movieId) {
+    const wasAlreadyWanted = wantedMovieIds.includes(movieId);
+    const method = wasAlreadyWanted ? "DELETE" : "POST";
+
+    const response = await fetch(
+      `http://localhost:5000/api/watchlist/${movieId}`,
+      { method }
+    );
+
+    if (!response.ok) {
+      return;
+    }
+
+    if (wasAlreadyWanted) {
       setWantedMovieIds(
         wantedMovieIds.filter(id => id !== movieId)
       );
@@ -28,7 +40,15 @@ export default function App() {
       setMovies(data);
     }
 
+    async function loadWatchlist() {
+      const response = await fetch("http://localhost:5000/api/watchlist");
+      const movieIds = await response.json();
+
+      setWantedMovieIds(movieIds);
+    }
+
     loadMovies();
+    loadWatchlist();
   }, []);
 
   const wantedMovies = movies.filter(movie =>
