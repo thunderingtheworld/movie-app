@@ -12,11 +12,13 @@ function formatVoteCount(voteCount) {
 
 // text gets more prominent as confidence increases:
 function getVoteCountClasses(voteCount) {
-  if (voteCount >= 5_000) {
+  // Context: after checking mid-2026 the most voted film 
+  // on TMDB has 40k votes
+  if (voteCount >= 10_000) {
     return "font-semibold text-gray-700";
   }
 
-  if (voteCount >= 1_000) {
+  if (voteCount >= 5_000) {
     return "font-medium text-gray-600";
   }
 
