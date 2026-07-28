@@ -65,6 +65,7 @@ export default function App() {
               movies={wantedMovies}
               wantedMovieIds={wantedMovieIds}
               onToggleWantToWatch={toggleWantToWatch}
+              emptyMessage="Your watchlist is empty."
             />
           }
         />
