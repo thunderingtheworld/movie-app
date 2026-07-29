@@ -3,7 +3,7 @@ import sqlite3
 
 import requests
 from dotenv import load_dotenv
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from flask_cors import CORS
 
 load_dotenv()
@@ -18,7 +18,19 @@ app.config["DATABASE"] = os.path.join(app.instance_path, "movie-app.sqlite3")
 def get_db():
     os.makedirs(app.instance_path, exist_ok=True)
     database = sqlite3.connect(app.config["DATABASE"])
-    database.execute("CREATE TABLE IF NOT EXISTS watchlist (movie_id INTEGER PRIMARY KEY)")
+    database.row_factory = sqlite3.Row
+    database.execute(
+        """
+        CREATE TABLE IF NOT EXISTS watchlist (
+            movie_id INTEGER PRIMARY KEY,
+            title TEXT NOT NULL,
+            year INTEGER,
+            rating REAL NOT NULL,
+            vote_count INTEGER NOT NULL,
+            poster_path TEXT
+        )
+        """
+    )
     return database
 
 
@@ -64,12 +76,12 @@ def get_movies():
             "title": movie["title"],
             "release_date": movie.get("release_date"),
             "year": (
-                movie["release_date"][:4]
+                int(movie["release_date"][:4])
                 if movie.get("release_date")
                 else None
             ),
-            "rating": movie["vote_average"],
-            "vote_count": movie["vote_count"],
+            "rating": movie.get("vote_average") or 0,
+            "vote_count": movie.get("vote_count") or 0,
             "description": movie["overview"],
             "poster_path": movie["poster_path"],
         }
@@ -82,17 +94,43 @@ def get_movies():
 @app.get("/api/watchlist")
 def get_watchlist():
     with get_db() as database:
-        rows = database.execute("SELECT movie_id FROM watchlist ORDER BY movie_id").fetchall()
-    return jsonify([row[0] for row in rows])
+        movies = database.execute(
+            """
+            SELECT movie_id AS id, title, year, rating, vote_count, poster_path
+            FROM watchlist
+            ORDER BY title
+            """
+        ).fetchall()
+    return jsonify([dict(movie) for movie in movies])
 
 
-@app.post("/api/watchlist/<int:movie_id>")
-def add_to_watchlist(movie_id):
-    if movie_id <= 0:
-        return jsonify({"error": "movie_id must be a positive integer"}), 400
+@app.post("/api/watchlist")
+def add_to_watchlist():
+    movie = request.get_json(silent=True)
+    required_fields = ("id", "title")
+
+    if not isinstance(movie, dict) or any(
+        field not in movie for field in required_fields
+    ):
+        return jsonify({"error": "movie card data is missing"}), 400
+
     with get_db() as database:
-        result = database.execute("INSERT OR IGNORE INTO watchlist (movie_id) VALUES (?)", (movie_id,))
-    return jsonify({"movie_id": movie_id}), 201 if result.rowcount == 1 else 200
+        database.execute(
+            """
+            INSERT OR REPLACE INTO watchlist
+                (movie_id, title, year, rating, vote_count, poster_path)
+            VALUES (?, ?, ?, ?, ?, ?)
+            """,
+            (
+                movie["id"],
+                movie["title"],
+                movie.get("year"),
+                movie.get("rating") or 0,
+                movie.get("vote_count") or 0,
+                movie.get("poster_path"),
+            ),
+        )
+    return jsonify(movie), 201
 
 
 @app.delete("/api/watchlist/<int:movie_id>")

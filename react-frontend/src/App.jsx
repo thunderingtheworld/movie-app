@@ -13,30 +13,40 @@ function getNavLinkClasses({ isActive }) {
 export default function App() {
   const [movies, setMovies] = useState([]);
   const [isMoviesLoading, setIsMoviesLoading] = useState(true);
-  const [wantedMovieIds, setWantedMovieIds] = useState([]);
+  const [wantedMovies, setWantedMovies] = useState([]);
   const [isWatchlistLoading, setIsWatchlistLoading] = useState(true);
 
-  async function toggleWantToWatch(movieId) {
-    const wasAlreadyWanted = wantedMovieIds.includes(movieId);
-    const method = wasAlreadyWanted ? "DELETE" : "POST";
+  async function toggleWantToWatch(movieToToggle) {
+    const wasAlreadyWanted = wantedMovieIds.includes(movieToToggle.id);
+    let response;
 
-    const response = await fetch(
-      `http://localhost:5000/api/watchlist/${movieId}`,
-      { method }
-    );
+    if (wasAlreadyWanted) {
+      response = await fetch(
+        `http://localhost:5000/api/watchlist/${movieToToggle.id}`,
+        { method: "DELETE" }
+      );
+    } else {
+      response = await fetch("http://localhost:5000/api/watchlist", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(movieToToggle),
+      });
+    }
 
     if (!response.ok) {
       return;
     }
 
     if (wasAlreadyWanted) {
-      setWantedMovieIds(
-        wantedMovieIds.filter(id => id !== movieId)
+      setWantedMovies(previousWantedMovies =>
+        previousWantedMovies.filter(
+          wantedMovie => wantedMovie.id !== movieToToggle.id
+        )
       );
     } else {
-      setWantedMovieIds([
-        ...wantedMovieIds,
-        movieId,
+      setWantedMovies(previousWantedMovies => [
+        ...previousWantedMovies,
+        movieToToggle,
       ]);
     }
   }
@@ -52,9 +62,9 @@ export default function App() {
 
     async function loadWatchlist() {
       const response = await fetch("http://localhost:5000/api/watchlist");
-      const movieIds = await response.json();
+      const savedMovies = await response.json();
 
-      setWantedMovieIds(movieIds);
+      setWantedMovies(savedMovies);
       setIsWatchlistLoading(false);
     }
 
@@ -62,11 +72,8 @@ export default function App() {
     loadWatchlist();
   }, []);
 
-  const isInitialLoading = isMoviesLoading || isWatchlistLoading;
-
-  const wantedMovies = movies.filter(movie =>
-    wantedMovieIds.includes(movie.id)
-  );
+  const wantedMovieIds = wantedMovies.map(movie => movie.id);
+  const isNewReleasesLoading = isMoviesLoading || isWatchlistLoading;
 
   return (
     <>
@@ -102,7 +109,7 @@ export default function App() {
               movies={movies}
               wantedMovieIds={wantedMovieIds}
               onToggleWantToWatch={toggleWantToWatch}
-              isLoading={isInitialLoading}
+              isLoading={isNewReleasesLoading}
             />
           }
         />
@@ -116,7 +123,7 @@ export default function App() {
               wantedMovieIds={wantedMovieIds}
               onToggleWantToWatch={toggleWantToWatch}
               emptyMessage="Your watchlist is empty."
-              isLoading={isInitialLoading}
+              isLoading={isWatchlistLoading}
             />
           }
         />

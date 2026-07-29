@@ -38,7 +38,7 @@ export default function MovieCard({
     setIsUpdating(true);
 
     try {
-      await onToggleWantToWatch(movie.id);
+      await onToggleWantToWatch(movie);
     } finally {
       setIsUpdating(false);
     }
