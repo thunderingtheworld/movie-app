@@ -12,6 +12,7 @@ function getNavLinkClasses({ isActive }) {
 
 export default function App() {
   const [movies, setMovies] = useState([]);
+  const [isMoviesLoading, setIsMoviesLoading] = useState(true);
   const [wantedMovieIds, setWantedMovieIds] = useState([]);
   const [isWatchlistLoading, setIsWatchlistLoading] = useState(true);
 
@@ -46,6 +47,7 @@ export default function App() {
       const data = await response.json();
 
       setMovies(data);
+      setIsMoviesLoading(false);
     }
 
     async function loadWatchlist() {
@@ -59,6 +61,8 @@ export default function App() {
     loadMovies();
     loadWatchlist();
   }, []);
+
+  const isInitialLoading = isMoviesLoading || isWatchlistLoading;
 
   const wantedMovies = movies.filter(movie =>
     wantedMovieIds.includes(movie.id)
@@ -98,6 +102,7 @@ export default function App() {
               movies={movies}
               wantedMovieIds={wantedMovieIds}
               onToggleWantToWatch={toggleWantToWatch}
+              isLoading={isInitialLoading}
             />
           }
         />
@@ -111,7 +116,7 @@ export default function App() {
               wantedMovieIds={wantedMovieIds}
               onToggleWantToWatch={toggleWantToWatch}
               emptyMessage="Your watchlist is empty."
-              isLoading={isWatchlistLoading}
+              isLoading={isInitialLoading}
             />
           }
         />

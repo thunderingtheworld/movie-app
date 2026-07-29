@@ -115,13 +115,13 @@ export default function MovieCard({
           className={
             wantToWatch
               ? `
-                  mt-auto w-24 self-end rounded border border-green-600 bg-green-600
+                  mt-auto inline-flex h-10 w-24 items-center justify-center self-end rounded border border-green-600 bg-green-600
                   px-3 py-2 text-white transition
                   hover:bg-green-700 active:scale-95
                   disabled:cursor-default disabled:opacity-70
                 `
               : `
-                  mt-auto w-24 self-end rounded border border-gray-300 bg-gray-100
+                  mt-auto inline-flex h-10 w-24 items-center justify-center self-end rounded border border-gray-300 bg-gray-100
                   px-3 py-2 text-gray-600 transition
                   hover:border-green-500 hover:bg-green-50 hover:text-green-700
                   active:scale-95 active:bg-green-100
@@ -132,7 +132,7 @@ export default function MovieCard({
           onClick={handleToggle}
         >
           {isUpdating
-            ? <span className="inline-block animate-spin">↻</span>
+            ? <span className="h-5 w-5 animate-spin rounded-full border-2 border-current border-r-transparent" />
             : (wantToWatch ? "✓ Saved" : "♡ Save")}
         </button>
       </div>
