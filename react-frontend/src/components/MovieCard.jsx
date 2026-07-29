@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 function formatVoteCount(voteCount) {
   if (voteCount >= 1_000_000) {
     return `${(voteCount / 1_000_000).toFixed(1)}m`;
@@ -30,6 +32,18 @@ export default function MovieCard({
   wantToWatch,
   onToggleWantToWatch,
 }) {
+  const [isUpdating, setIsUpdating] = useState(false);
+
+  async function handleToggle() {
+    setIsUpdating(true);
+
+    try {
+      await onToggleWantToWatch(movie.id);
+    } finally {
+      setIsUpdating(false);
+    }
+  }
+
   return (
     <article
       className={
@@ -101,20 +115,25 @@ export default function MovieCard({
           className={
             wantToWatch
               ? `
-                  mt-auto self-end rounded border border-green-600 bg-green-600
+                  mt-auto w-24 self-end rounded border border-green-600 bg-green-600
                   px-3 py-2 text-white transition
                   hover:bg-green-700 active:scale-95
+                  disabled:cursor-default disabled:opacity-70
                 `
               : `
-                  mt-auto self-end rounded border border-gray-300 bg-gray-100
+                  mt-auto w-24 self-end rounded border border-gray-300 bg-gray-100
                   px-3 py-2 text-gray-600 transition
                   hover:border-green-500 hover:bg-green-50 hover:text-green-700
                   active:scale-95 active:bg-green-100
+                  disabled:cursor-default disabled:opacity-70
                 `
           }
-          onClick={() => onToggleWantToWatch(movie.id)}
+          disabled={isUpdating}
+          onClick={handleToggle}
         >
-          {wantToWatch ? "✓ Saved" : "♡ Save"}
+          {isUpdating
+            ? <span className="inline-block animate-spin">↻</span>
+            : (wantToWatch ? "✓ Saved" : "♡ Save")}
         </button>
       </div>
     </article>

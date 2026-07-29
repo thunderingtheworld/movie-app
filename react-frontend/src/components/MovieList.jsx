@@ -5,13 +5,18 @@ export default function MovieList({
   movies,
   wantedMovieIds,
   onToggleWantToWatch,
-  emptyMessage
+  emptyMessage,
+  isLoading = false
 }) {
   return (
     <main className="mx-auto max-w-7xl p-6">
       <h1 className="mb-6 text-3xl font-bold">{title}</h1>
 
-      {movies.length === 0
+      {isLoading
+        ? (
+            <p className="text-gray-500">Loading...</p>
+          )
+        : movies.length === 0
         ? (
             <p className="text-gray-500">{emptyMessage}</p>
           )
