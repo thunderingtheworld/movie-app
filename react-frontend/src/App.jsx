@@ -82,7 +82,9 @@ export default function App() {
             className={getNavLinkClasses}
             to="/watchlist"
           >
-            Watchlist ({wantedMovieIds.length})
+            Watchlist {wantedMovieIds.length > 0
+              ? `(${wantedMovieIds.length})`
+              : null}
           </NavLink>
         </div>
       </nav>
