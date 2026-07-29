@@ -46,17 +46,14 @@ export default function MovieCard({
 
   return (
     <article
-      className={
-        wantToWatch
-          ? `
-              flex overflow-hidden rounded-lg border border-green-300
-              bg-green-50 opacity-85 shadow-none transition
-            `
-          : `
-              flex overflow-hidden rounded-lg border border-gray-200
-              bg-white shadow-sm transition
-            `
-      }
+      aria-busy={isUpdating}
+      className={`
+        flex overflow-hidden rounded-lg border transition-all duration-200
+        ${wantToWatch
+          ? "border-green-300 bg-green-50 shadow-none"
+          : "border-gray-200 bg-white shadow-sm"}
+        ${isUpdating ? "opacity-70" : "opacity-100"}
+      `}
     >
       <div className="relative w-1/3">
         {movie.poster_path !== null
