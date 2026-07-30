@@ -17,3 +17,7 @@ Requirement is roughly to put something like this in about/credits page:
 [TMDB approved logo]
 
 This product uses the TMDB API but is not endorsed or certified by TMDB."
+
+---
+
+TODO fix in pagination: TMDB can repeat movies across page boundaries, so only append new IDs.

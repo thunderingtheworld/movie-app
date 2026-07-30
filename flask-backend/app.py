@@ -44,6 +44,10 @@ def get_movies():
     if not TMDB_TOKEN:
         return jsonify({"error": "TMDB_TOKEN is missing"}), 500
 
+    page = request.args.get("page", default=1, type=int)
+    if page < 1:
+        return jsonify({"error": "page must be a positive integer"}), 400
+
     response = requests.get(
         "https://api.themoviedb.org/3/discover/movie",
         headers={
@@ -57,7 +61,7 @@ def get_movies():
             "sort_by": "primary_release_date.desc",
             "vote_average.gte": 7,
             "vote_count.gte": 1000,
-            "page": 1,
+            "page": page,
         },
         timeout=10,
     )
@@ -68,7 +72,8 @@ def get_movies():
             "status": response.status_code,
         }), 502
 
-    tmdb_movies = response.json()["results"]
+    tmdb_data = response.json()
+    tmdb_movies = tmdb_data["results"]
 
     movies = [
         {
@@ -88,7 +93,12 @@ def get_movies():
         for movie in tmdb_movies
     ]
 
-    return jsonify(movies)
+    # Pass pagination metadata through so React knows when to hide Load more.
+    return jsonify({
+        "movies": movies,
+        "page": tmdb_data["page"],
+        "total_pages": tmdb_data["total_pages"],
+    })
 
 
 @app.get("/api/watchlist")

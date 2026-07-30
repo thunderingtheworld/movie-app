@@ -1,4 +1,4 @@
-import { NavLink, Route, Routes } from "react-router";
+import { Link, NavLink, Route, Routes } from "react-router";
 import { useEffect, useState } from "react";
 import MovieList from "./components/MovieList";
 
@@ -12,9 +12,41 @@ function getNavLinkClasses({ isActive }) {
 
 export default function App() {
   const [movies, setMovies] = useState([]);
-  const [isMoviesLoading, setIsMoviesLoading] = useState(true);
   const [wantedMovies, setWantedMovies] = useState([]);
+
+  const [currentMoviePage, setCurrentMoviePage] = useState(1);
+  const [totalMoviePages, setTotalMoviePages] = useState(1);
+
+  const [isMoviesLoading, setIsMoviesLoading] = useState(true);
+  const [isLoadingMoreMovies, setIsLoadingMoreMovies] = useState(false);
   const [isWatchlistLoading, setIsWatchlistLoading] = useState(true);
+
+  async function loadMoreMovies() {
+    setIsLoadingMoreMovies(true);
+    const nextPage = currentMoviePage + 1;
+
+    try {
+      const response = await fetch(
+        `http://localhost:5000/api/movies?page=${nextPage}`
+      );
+
+      if (!response.ok) {
+        return;
+      }
+
+      const data = await response.json();
+      const newMovies = data.movies;
+
+      setMovies(previousMovies => [
+        ...previousMovies,
+        ...newMovies,
+      ]);
+      setCurrentMoviePage(data.page);
+      setTotalMoviePages(data.total_pages);
+    } finally {
+      setIsLoadingMoreMovies(false);
+    }
+  }
 
   async function toggleWantToWatch(movieToToggle) {
     const wasAlreadyWanted = wantedMovieIds.includes(movieToToggle.id);
@@ -53,10 +85,12 @@ export default function App() {
 
   useEffect(() => {
     async function loadMovies() {
-      const response = await fetch("http://localhost:5000/api/movies");
+      const response = await fetch("http://localhost:5000/api/movies?page=1");
       const data = await response.json();
 
-      setMovies(data);
+      setMovies(data.movies);
+      // currentMoviePage is already 1 so no need to set it
+      setTotalMoviePages(data.total_pages);
       setIsMoviesLoading(false);
     }
 
@@ -73,15 +107,28 @@ export default function App() {
   }, []);
 
   const wantedMovieIds = wantedMovies.map(movie => movie.id);
+
+  // We have more movies unless we are at last page (or out of bounds):
+  const hasMoreMovies = currentMoviePage < totalMoviePages;
+  
+  // We want to both have movies & know if we should mark them as saved already:
   const isNewReleasesLoading = isMoviesLoading || isWatchlistLoading;
 
   return (
     <>
       <nav className="border-b border-gray-200 bg-white shadow-sm">
         <div className="mx-auto flex max-w-7xl items-center gap-2 px-6 py-4">
-          <span className="mr-auto text-xl font-bold tracking-tight">
+          <Link
+            className="mr-auto flex items-center gap-2 text-xl font-bold tracking-tight"
+            to="/"
+          >
+            <img
+              className="size-8"
+              src="/favicon.svg"
+              alt=""
+            />
             Movie Night
-          </span>
+          </Link>
 
           <NavLink
             className={getNavLinkClasses}
@@ -109,7 +156,9 @@ export default function App() {
               movies={movies}
               wantedMovieIds={wantedMovieIds}
               onToggleWantToWatch={toggleWantToWatch}
-              isLoading={isNewReleasesLoading}
+              isInitialLoading={isNewReleasesLoading}
+              onLoadMoreMovies={hasMoreMovies ? loadMoreMovies : null}
+              isLoadingMoreMovies={isLoadingMoreMovies}
             />
           }
         />
@@ -123,7 +172,7 @@ export default function App() {
               wantedMovieIds={wantedMovieIds}
               onToggleWantToWatch={toggleWantToWatch}
               emptyMessage="Your watchlist is empty."
-              isLoading={isWatchlistLoading}
+              isInitialLoading={isWatchlistLoading}
             />
           }
         />
