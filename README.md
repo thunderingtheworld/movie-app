@@ -1,9 +1,14 @@
-# Movie-app
+# Movie Night
 
-Run via first 
+Create `flask-backend/.env`:
 
-``bash bash_start_backend.sh`` 
+```env
+TMDB_TOKEN=your_tmdb_read_access_token
+```
 
-and then
+Then run these in separate terminals:
 
-``bash bash_start_frontend.sh``
+```bash
+bash bash_start_backend.sh
+bash bash_start_frontend.sh
+```
