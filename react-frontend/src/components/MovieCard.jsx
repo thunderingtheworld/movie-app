@@ -1,21 +1,9 @@
 import { useState } from "react";
+import { Link } from "react-router";
+import formatVoteCount from "../utils/formatVoteCount";
 
-function formatVoteCount(voteCount) {
-  if (voteCount >= 1_000_000) {
-    return `${(voteCount / 1_000_000).toFixed(1)}m`;
-  }
-
-  if (voteCount >= 1_000) {
-    return `${(voteCount / 1_000).toFixed(1)}k`;
-  }
-
-  return voteCount.toLocaleString();
-}
-
-// text gets more prominent as confidence increases:
 function getVoteCountClasses(voteCount) {
-  // Context: after checking mid-2026 the most voted film 
-  // on TMDB has 40k votes
+  // Context: as of mid-2026, the most-voted movie on TMDB is at 40k votes.
   if (voteCount >= 10_000) {
     return "font-semibold text-gray-700";
   }
@@ -26,36 +14,35 @@ function getVoteCountClasses(voteCount) {
 
   return "font-normal text-gray-500";
 }
-
 export default function MovieCard({
   movie,
   wantToWatch,
   onToggleWantToWatch,
 }) {
-  const [isUpdating, setIsUpdating] = useState(false);
+  const [isChangingWantedStatus, setIsChangingWantedStatus] = useState(false);
 
-  async function handleToggle() {
-    setIsUpdating(true);
+  async function handleToggleWantToWatch() {
+    setIsChangingWantedStatus(true);
 
     try {
       await onToggleWantToWatch(movie);
     } finally {
-      setIsUpdating(false);
+      setIsChangingWantedStatus(false);
     }
   }
 
   return (
     <article
-      aria-busy={isUpdating}
+      aria-busy={isChangingWantedStatus}
       className={`
         flex overflow-hidden rounded-lg border transition-all duration-200
         ${wantToWatch
           ? "border-green-300 bg-green-50 shadow-none"
           : "border-gray-200 bg-white shadow-sm"}
-        ${isUpdating ? "opacity-70" : "opacity-100"}
+        ${isChangingWantedStatus ? "opacity-70" : "opacity-100"}
       `}
     >
-      <div className="relative w-1/3">
+      <Link className="relative w-1/3" to={`/movies/${movie.id}`}>
         {movie.poster_path !== null
           ? (
               <img
@@ -73,12 +60,14 @@ export default function MovieCard({
         {wantToWatch
           ? <div className="absolute inset-0 bg-gray-900/15" />
           : null}
-      </div>
+      </Link>
 
       <div className="flex w-2/3 flex-col gap-2 p-4">
-        <h2 className="text-xl font-semibold">
-          {movie.title}
-        </h2>
+        <Link className="hover:underline" to={`/movies/${movie.id}`}>
+          <h2 className="text-xl font-semibold">
+            {movie.title}
+          </h2>
+        </Link>
 
         {movie.year !== null && movie.year !== undefined
           ? (
@@ -89,25 +78,16 @@ export default function MovieCard({
           : null}
 
         <p className="mb-4">
-          <span className="text-yellow-500">★</span>
-
-          <span className="ml-1 font-semibold">
-            {movie.rating.toFixed(1)}
-          </span>
-
-          <span className="text-sm font-light text-gray-500">
-            {" "}/ 10
-          </span>
-
+          <span className="text-yellow-500">★</span>{" "}
+          <span className="font-semibold">{movie.rating.toFixed(1)}</span>
+          <span className="text-sm font-light text-gray-500"> / 10</span>
           <span className="mx-2 text-gray-400">·</span>
-
           <span className="text-sm text-gray-500">
             <span className={getVoteCountClasses(movie.vote_count)}>
               {formatVoteCount(movie.vote_count)}
-            </span> votes
+            </span> {movie.vote_count === 1 ? "vote" : "votes"}
           </span>
         </p>
-
         <button 
           className={
             wantToWatch
@@ -125,10 +105,10 @@ export default function MovieCard({
                   disabled:cursor-default disabled:opacity-70
                 `
           }
-          disabled={isUpdating}
-          onClick={handleToggle}
+          disabled={isChangingWantedStatus}
+          onClick={handleToggleWantToWatch}
         >
-          {isUpdating
+          {isChangingWantedStatus
             ? <span className="h-5 w-5 animate-spin rounded-full border-2 border-current border-r-transparent" />
             : (wantToWatch ? "✓ Saved" : "♡ Save")}
         </button>

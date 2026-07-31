@@ -101,6 +101,41 @@ def get_movies():
     })
 
 
+@app.get("/api/movies/<int:movie_id>")
+def get_movie(movie_id):
+    if not TMDB_TOKEN:
+        return jsonify({"error": "TMDB_TOKEN is missing"}), 500
+
+    response = requests.get(
+        f"https://api.themoviedb.org/3/movie/{movie_id}",
+        headers={
+            "Authorization": f"Bearer {TMDB_TOKEN}",
+            "accept": "application/json",
+        },
+        params={"language": "en-US"},
+        timeout=10,
+    )
+
+    if not response.ok:
+        return jsonify({"error": "Movie could not be loaded"}), response.status_code
+
+    movie = response.json()
+    return jsonify({
+        "id": movie["id"],
+        "title": movie["title"],
+        "year": (
+            int(movie["release_date"][:4])
+            if movie.get("release_date")
+            else None
+        ),
+        "rating": movie.get("vote_average") or 0,
+        "vote_count": movie.get("vote_count") or 0,
+        "description": movie.get("overview"),
+        "poster_path": movie.get("poster_path"),
+        "runtime": movie.get("runtime"),
+        "genres": [genre["name"] for genre in movie.get("genres", [])],
+    })
+
 @app.get("/api/watchlist")
 def get_watchlist():
     with get_db() as database:

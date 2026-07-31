@@ -1,5 +1,6 @@
 import { Link, NavLink, Route, Routes } from "react-router";
 import { useEffect, useState } from "react";
+import MovieDetails from "./components/MovieDetails";
 import MovieList from "./components/MovieList";
 
 function getNavLinkClasses({ isActive }) {
@@ -173,6 +174,17 @@ export default function App() {
               onToggleWantToWatch={toggleWantToWatch}
               emptyMessage="Your watchlist is empty."
               isInitialLoading={isWatchlistLoading}
+            />
+          }
+        />
+
+        <Route
+          path="/movies/:movieId"
+          element={
+            <MovieDetails
+              wantedMovieIds={wantedMovieIds}
+              onToggleWantToWatch={toggleWantToWatch}
+              isWatchlistLoading={isWatchlistLoading}
             />
           }
         />
