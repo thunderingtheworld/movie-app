@@ -3,8 +3,8 @@ import MovieCard from "./MovieCard";
 export default function MovieList({
   title,
   movies,
-  wantedMovieIds,
-  onToggleWantToWatch,
+  watchlistMovieIds,
+  onToggleWatchlistMovie,
   emptyMessage,
   isInitialLoading = false,
   onLoadMoreMovies,
@@ -31,8 +31,8 @@ export default function MovieList({
                 <MovieCard
                   key={movie.id}
                   movie={movie}
-                  wantToWatch={wantedMovieIds.includes(movie.id)}
-                  onToggleWantToWatch={onToggleWantToWatch}
+                  isInWatchlist={watchlistMovieIds.includes(movie.id)}
+                  onToggleWatchlistMovie={onToggleWatchlistMovie}
                 />
               ))}
             </section>

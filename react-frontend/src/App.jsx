@@ -13,7 +13,7 @@ function getNavLinkClasses({ isActive }) {
 
 export default function App() {
   const [movies, setMovies] = useState([]);
-  const [wantedMovies, setWantedMovies] = useState([]);
+  const [watchlistMovies, setWatchlistMovies] = useState([]);
 
   const [currentMoviePage, setCurrentMoviePage] = useState(1);
   const [totalMoviePages, setTotalMoviePages] = useState(1);
@@ -49,11 +49,11 @@ export default function App() {
     }
   }
 
-  async function toggleWantToWatch(movieToToggle) {
-    const wasAlreadyWanted = wantedMovieIds.includes(movieToToggle.id);
+  async function toggleWatchlistMovie(movieToToggle) {
+    const wasInWatchlist = watchlistMovieIds.includes(movieToToggle.id);
     let response;
 
-    if (wasAlreadyWanted) {
+    if (wasInWatchlist) {
       response = await fetch(
         `http://localhost:5000/api/watchlist/${movieToToggle.id}`,
         { method: "DELETE" }
@@ -70,15 +70,15 @@ export default function App() {
       return;
     }
 
-    if (wasAlreadyWanted) {
-      setWantedMovies(previousWantedMovies =>
-        previousWantedMovies.filter(
-          wantedMovie => wantedMovie.id !== movieToToggle.id
+    if (wasInWatchlist) {
+      setWatchlistMovies(previousWatchlistMovies =>
+        previousWatchlistMovies.filter(
+          watchlistMovie => watchlistMovie.id !== movieToToggle.id
         )
       );
     } else {
-      setWantedMovies(previousWantedMovies => [
-        ...previousWantedMovies,
+      setWatchlistMovies(previousWatchlistMovies => [
+        ...previousWatchlistMovies,
         movieToToggle,
       ]);
     }
@@ -97,9 +97,9 @@ export default function App() {
 
     async function loadWatchlist() {
       const response = await fetch("http://localhost:5000/api/watchlist");
-      const savedMovies = await response.json();
+      const loadedWatchlistMovies = await response.json();
 
-      setWantedMovies(savedMovies);
+      setWatchlistMovies(loadedWatchlistMovies);
       setIsWatchlistLoading(false);
     }
 
@@ -107,12 +107,12 @@ export default function App() {
     loadWatchlist();
   }, []);
 
-  const wantedMovieIds = wantedMovies.map(movie => movie.id);
+  const watchlistMovieIds = watchlistMovies.map(movie => movie.id);
 
   // We have more movies unless we are at last page (or out of bounds):
   const hasMoreMovies = currentMoviePage < totalMoviePages;
   
-  // We want to both have movies & know if we should mark them as saved already:
+  // We want to both have movies & know if we should mark them as in watchlist already:
   const isNewReleasesLoading = isMoviesLoading || isWatchlistLoading;
 
   return (
@@ -141,8 +141,8 @@ export default function App() {
             className={getNavLinkClasses}
             to="/watchlist"
           >
-            Watchlist {wantedMovieIds.length > 0
-              ? `(${wantedMovieIds.length})`
+            Watchlist {watchlistMovieIds.length > 0
+              ? `(${watchlistMovieIds.length})`
               : null}
           </NavLink>
         </div>
@@ -155,8 +155,8 @@ export default function App() {
             <MovieList
               title="✨ New releases"
               movies={movies}
-              wantedMovieIds={wantedMovieIds}
-              onToggleWantToWatch={toggleWantToWatch}
+              watchlistMovieIds={watchlistMovieIds}
+              onToggleWatchlistMovie={toggleWatchlistMovie}
               isInitialLoading={isNewReleasesLoading}
               onLoadMoreMovies={hasMoreMovies ? loadMoreMovies : null}
               isLoadingMoreMovies={isLoadingMoreMovies}
@@ -169,9 +169,9 @@ export default function App() {
           element={
             <MovieList
               title="❤️ Watchlist"
-              movies={wantedMovies}
-              wantedMovieIds={wantedMovieIds}
-              onToggleWantToWatch={toggleWantToWatch}
+              movies={watchlistMovies}
+              watchlistMovieIds={watchlistMovieIds}
+              onToggleWatchlistMovie={toggleWatchlistMovie}
               emptyMessage="Your watchlist is empty."
               isInitialLoading={isWatchlistLoading}
             />
@@ -182,8 +182,8 @@ export default function App() {
           path="/movies/:movieId"
           element={
             <MovieDetails
-              wantedMovieIds={wantedMovieIds}
-              onToggleWantToWatch={toggleWantToWatch}
+              watchlistMovieIds={watchlistMovieIds}
+              onToggleWatchlistMovie={toggleWatchlistMovie}
               isWatchlistLoading={isWatchlistLoading}
             />
           }

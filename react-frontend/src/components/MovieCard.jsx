@@ -16,30 +16,30 @@ function getVoteCountClasses(voteCount) {
 }
 export default function MovieCard({
   movie,
-  wantToWatch,
-  onToggleWantToWatch,
+  isInWatchlist,
+  onToggleWatchlistMovie,
 }) {
-  const [isChangingWantedStatus, setIsChangingWantedStatus] = useState(false);
+  const [isUpdatingWatchlist, setIsUpdatingWatchlist] = useState(false);
 
-  async function handleToggleWantToWatch() {
-    setIsChangingWantedStatus(true);
+  async function handleWatchlistToggle() {
+    setIsUpdatingWatchlist(true);
 
     try {
-      await onToggleWantToWatch(movie);
+      await onToggleWatchlistMovie(movie);
     } finally {
-      setIsChangingWantedStatus(false);
+      setIsUpdatingWatchlist(false);
     }
   }
 
   return (
     <article
-      aria-busy={isChangingWantedStatus}
+      aria-busy={isUpdatingWatchlist}
       className={`
         flex overflow-hidden rounded-lg border transition-all duration-200
-        ${wantToWatch
+        ${isInWatchlist
           ? "border-green-300 bg-green-50 shadow-none"
           : "border-gray-200 bg-white shadow-sm"}
-        ${isChangingWantedStatus ? "opacity-70" : "opacity-100"}
+        ${isUpdatingWatchlist ? "opacity-70" : "opacity-100"}
       `}
     >
       <Link className="relative w-1/3" to={`/movies/${movie.id}`}>
@@ -57,7 +57,7 @@ export default function MovieCard({
               </div>
             )}
 
-        {wantToWatch
+        {isInWatchlist
           ? <div className="absolute inset-0 bg-gray-900/15" />
           : null}
       </Link>
@@ -90,7 +90,7 @@ export default function MovieCard({
         </p>
         <button 
           className={
-            wantToWatch
+            isInWatchlist
               ? `
                   mt-auto inline-flex h-10 w-24 items-center justify-center self-end rounded border border-green-600 bg-green-600
                   px-3 py-2 text-white transition
@@ -105,12 +105,12 @@ export default function MovieCard({
                   disabled:cursor-default disabled:opacity-70
                 `
           }
-          disabled={isChangingWantedStatus}
-          onClick={handleToggleWantToWatch}
+          disabled={isUpdatingWatchlist}
+          onClick={handleWatchlistToggle}
         >
-          {isChangingWantedStatus
+          {isUpdatingWatchlist
             ? <span className="h-5 w-5 animate-spin rounded-full border-2 border-current border-r-transparent" />
-            : (wantToWatch ? "✓ Saved" : "♡ Save")}
+            : (isInWatchlist ? "✓ Saved" : "♡ Save")}
         </button>
       </div>
     </article>
