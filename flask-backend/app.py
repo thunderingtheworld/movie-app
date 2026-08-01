@@ -22,7 +22,8 @@ def get_db():
     database.execute(
         """
         CREATE TABLE IF NOT EXISTS watchlist (
-            movie_id INTEGER PRIMARY KEY,
+            added_order INTEGER PRIMARY KEY AUTOINCREMENT,
+            movie_id INTEGER NOT NULL UNIQUE,
             title TEXT NOT NULL,
             year INTEGER,
             rating REAL NOT NULL,
@@ -143,7 +144,7 @@ def get_watchlist():
             """
             SELECT movie_id AS id, title, year, rating, vote_count, poster_path
             FROM watchlist
-            ORDER BY title
+            ORDER BY added_order DESC
             """
         ).fetchall()
     return jsonify([dict(movie) for movie in movies])

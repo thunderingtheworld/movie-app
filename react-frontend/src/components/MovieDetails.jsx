@@ -1,6 +1,18 @@
-import { Link, useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { useEffect, useState } from "react";
 import formatVoteCount from "../utils/formatVoteCount";
+
+function formatRuntime(runtime) {
+  if (!runtime) return null;
+
+  const hours = Math.floor(runtime / 60);
+  const minutes = runtime % 60;
+
+  if (hours === 0) return `${minutes}m`;
+  if (minutes === 0) return `${hours}h`;
+
+  return `${hours}h ${minutes}m`;
+}
 
 export default function MovieDetails({
   watchlistMovieIds,
@@ -8,6 +20,7 @@ export default function MovieDetails({
   isWatchlistLoading,
 }) {
   const { movieId } = useParams();
+  const navigate = useNavigate();
   const [movie, setMovie] = useState(null);
   const [isMovieLoading, setIsMovieLoading] = useState(true);
   const [error, setError] = useState("");
@@ -62,9 +75,13 @@ export default function MovieDetails({
 
   return (
     <main className="mx-auto max-w-5xl p-6">
-      <Link className="text-gray-600 hover:underline" to="/">
+      <button
+        className="cursor-pointer text-gray-600 hover:underline"
+        type="button"
+        onClick={() => navigate(-1)}
+      >
         ← Back to movies
-      </Link>
+      </button>
 
       <article className="mt-6 grid gap-8 sm:grid-cols-[minmax(220px,1fr)_2fr]">
         {movie.poster_path
@@ -85,7 +102,7 @@ export default function MovieDetails({
           <h1 className="text-4xl font-bold">{movie.title}</h1>
 
           <p className="mt-3 text-gray-500">
-            {[movie.year, movie.runtime ? `${movie.runtime} min` : null]
+            {[movie.year, formatRuntime(movie.runtime)]
               .filter(Boolean)
               .join(" · ")}
           </p>

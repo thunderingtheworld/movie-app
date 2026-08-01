@@ -78,8 +78,8 @@ export default function App() {
       );
     } else {
       setWatchlistMovies(previousWatchlistMovies => [
-        ...previousWatchlistMovies,
         movieToToggle,
+        ...previousWatchlistMovies,
       ]);
     }
   }
