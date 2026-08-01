@@ -18,8 +18,10 @@ export default function MovieCard({
   movie,
   isInWatchlist,
   onToggleWatchlistMovie,
+  variant = "default",
 }) {
   const [isUpdatingWatchlist, setIsUpdatingWatchlist] = useState(false);
+  const isWatchlistView = variant === "watchlist";
 
   async function handleWatchlistToggle() {
     setIsUpdatingWatchlist(true);
@@ -36,7 +38,7 @@ export default function MovieCard({
       aria-busy={isUpdatingWatchlist}
       className={`
         flex overflow-hidden rounded-lg border transition-all duration-200
-        ${isInWatchlist
+        ${isInWatchlist && !isWatchlistView
           ? "border-green-300 bg-green-50 shadow-none"
           : "border-gray-200 bg-white shadow-sm"}
         ${isUpdatingWatchlist ? "opacity-70" : "opacity-100"}
@@ -57,7 +59,7 @@ export default function MovieCard({
               </div>
             )}
 
-        {isInWatchlist
+        {isInWatchlist && !isWatchlistView
           ? <div className="absolute inset-0 bg-gray-900/15" />
           : null}
       </Link>
@@ -88,9 +90,17 @@ export default function MovieCard({
             </span> {movie.vote_count === 1 ? "vote" : "votes"}
           </span>
         </p>
-        <button 
+        <button
           className={
-            isInWatchlist
+            isWatchlistView
+              ? `
+                  mt-auto inline-flex h-10 items-center justify-center self-end rounded border border-gray-300 bg-white
+                  px-3 py-2 text-gray-600 transition
+                  hover:border-red-500 hover:bg-red-50 hover:text-red-700
+                  active:scale-95 active:bg-red-100
+                  disabled:cursor-default disabled:opacity-70
+                `
+              : isInWatchlist
               ? `
                   mt-auto inline-flex h-10 w-24 items-center justify-center self-end rounded border border-green-600 bg-green-600
                   px-3 py-2 text-white transition
@@ -110,7 +120,7 @@ export default function MovieCard({
         >
           {isUpdatingWatchlist
             ? <span className="h-5 w-5 animate-spin rounded-full border-2 border-current border-r-transparent" />
-            : (isInWatchlist ? "✓ Saved" : "♡ Save")}
+            : (isWatchlistView ? "× Remove" : isInWatchlist ? "✓ Saved" : "♡ Save")}
         </button>
       </div>
     </article>

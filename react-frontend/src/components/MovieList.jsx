@@ -8,7 +8,8 @@ export default function MovieList({
   emptyMessage,
   isInitialLoading = false,
   onLoadMoreMovies,
-  isLoadingMoreMovies = false
+  isLoadingMoreMovies = false,
+  variant = "default",
 }) {
   return (
     <main className="mx-auto max-w-7xl p-6">
@@ -33,6 +34,7 @@ export default function MovieList({
                   movie={movie}
                   isInWatchlist={watchlistMovieIds.includes(movie.id)}
                   onToggleWatchlistMovie={onToggleWatchlistMovie}
+                  variant={variant}
                 />
               ))}
             </section>

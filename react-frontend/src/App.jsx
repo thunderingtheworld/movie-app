@@ -174,6 +174,7 @@ export default function App() {
               onToggleWatchlistMovie={toggleWatchlistMovie}
               emptyMessage="Your watchlist is empty."
               isInitialLoading={isWatchlistLoading}
+              variant="watchlist"
             />
           }
         />
