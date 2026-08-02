@@ -173,14 +173,9 @@
     }
   }
 
-  .medium-votes {
-    color: #cbc9dc;
-    font-weight: 500;
-  }
-
-  .high-votes {
-    color: #dddbea;
-    font-weight: 600;
+  .votes .popular-votes {
+    font-size: 0.8125rem;
+    font-weight: 800;
   }
 
   .save {
@@ -253,6 +248,46 @@
     animation: movie-spin 650ms linear infinite;
   }
 
+  @media (max-width: 35.999rem) {
+    padding: 0.625rem;
+    background: #08070f;
+    border: 1px solid #30213f;
+    box-shadow: 7px 8px 0 #261735;
+
+    .poster {
+      width: 80%;
+      margin-inline: auto;
+      box-shadow: 5px 6px 0 #5f358b, 0 0 16px rgb(84 224 202 / 28%);
+    }
+
+    .metadata {
+      width: 100%;
+      min-height: 0;
+      margin-top: 0.75rem;
+      padding: 0.875rem 0.125rem 0.125rem;
+      background: transparent;
+      border: 0;
+      border-top: 1px solid #30213f;
+      box-shadow: none;
+    }
+
+    &.saved:not(.watchlist) {
+      background: linear-gradient(115deg, #14322e 0 28%, #08070f 72%);
+      border-color: #62dfcb;
+      box-shadow: 7px 8px 0 #2b8e91, 0 0 24px rgb(97 233 211 / 38%);
+
+      .poster {
+        box-shadow: 5px 6px 0 #35cdb4, 0 0 20px rgb(97 233 211 / 42%);
+      }
+
+      .metadata {
+        background: transparent;
+        border: 0;
+        border-top: 1px solid #55d9c4;
+        box-shadow: none;
+      }
+    }
+  }
   @media (max-width: 24rem) {
     .metadata {
       padding-inline: 0.65rem;

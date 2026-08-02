@@ -4,15 +4,7 @@ import { HeartIcon, XIcon } from "./ActionIcons";
 import formatVoteCount from "../utils/formatVoteCount";
 
 function getVoteCountClass(voteCount) {
-  if (voteCount >= 10_000) {
-    return "high-votes";
-  }
-
-  if (voteCount >= 5_000) {
-    return "medium-votes";
-  }
-
-  return undefined;
+  return voteCount >= 5_000 ? "popular-votes" : undefined;
 }
 export default function MovieCard({
   movie,

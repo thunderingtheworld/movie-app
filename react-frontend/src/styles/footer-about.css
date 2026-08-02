@@ -80,3 +80,32 @@
     }
   }
 }
+@media (max-width: 25rem) {
+  .about-page {
+    padding-top: 3rem;
+
+    > h1 {
+      margin-bottom: 1.75rem;
+      font-size: 2.25rem;
+    }
+  }
+}
+
+@media (max-width: 23rem) {
+  .about-page {
+    width: calc(100% - 1.5rem);
+
+    .about-panel {
+      padding: 1.25rem;
+    }
+
+    .tmdb-credit {
+      grid-template-columns: 4.5rem 1fr;
+      gap: 1rem;
+
+      img {
+        width: 4.25rem;
+      }
+    }
+  }
+}

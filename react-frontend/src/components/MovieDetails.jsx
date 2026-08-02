@@ -81,10 +81,10 @@ export default function MovieDetails({
         type="button"
         onClick={() => navigate(-1)}
       >
-        ← Back to movies
+        ← Back
       </button>
 
-      <article className="layout">
+      <article className="layout" data-saved={isInWatchlist}>
         {movie.poster_path
           ? (
               <img
@@ -99,7 +99,7 @@ export default function MovieDetails({
               </div>
             )}
 
-        <div className="movie-details-copy" data-saved={isInWatchlist}>
+        <div className="movie-details-copy">
           <h1 className="title">{movie.title}</h1>
 
           <p className="facts">
@@ -113,11 +113,12 @@ export default function MovieDetails({
             : null}
 
           <p className="details-score">
-            <span className="details-star">★</span>{" "}
-            <span className="font-semibold">{movie.rating.toFixed(1)}</span>
-            <span className="text-gray-500"> / 10</span>
-            <span className="ml-2 text-gray-500">
-              ({formatVoteCount(movie.vote_count)} {movie.vote_count === 1 ? "vote" : "votes"})
+            <span className="details-star">★</span>
+            <strong>{movie.rating.toFixed(1)}</strong>
+            <span className="rating-scale">/ 10</span>
+            <span className="score-separator">·</span>
+            <span className="vote-total">
+              {formatVoteCount(movie.vote_count)} {movie.vote_count === 1 ? "vote" : "votes"}
             </span>
           </p>
           <p className="description">
