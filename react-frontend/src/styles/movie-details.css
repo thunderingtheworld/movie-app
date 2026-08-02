@@ -6,8 +6,9 @@
 
   &.status {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: 0.5rem;
+    padding-top: 4.5rem;
     color: var(--movie-muted);
   }
 

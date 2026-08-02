@@ -30,3 +30,15 @@ body {
     background-size: 100% 100%, 43% auto;
   }
 }
+.loading-state {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: fit-content;
+  margin-inline: auto;
+  padding: 0.875rem 1rem;
+  color: var(--movie-text);
+  background: #08070f;
+  border: 1px solid #30213f;
+  box-shadow: 5px 6px 0 #261735, 0 0 18px rgb(84 224 202 / 12%);
+}

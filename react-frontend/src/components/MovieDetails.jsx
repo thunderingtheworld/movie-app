@@ -62,8 +62,10 @@ export default function MovieDetails({
   if (isMovieLoading || isWatchlistLoading) {
     return (
       <main className="movie-details status">
-        <span className="h-5 w-5 animate-spin rounded-full border-2 border-gray-300 border-t-gray-700" />
-        <span>Loading...</span>
+        <div className="loading-state">
+          <span className="h-5 w-5 animate-spin rounded-full border-2 border-gray-300 border-t-gray-700" />
+          <span>Loading...</span>
+        </div>
       </main>
     );
   }

@@ -18,7 +18,7 @@ export default function MovieList({
 
       {isInitialLoading
         ? (
-            <div className="flex items-center gap-2 text-gray-500">
+            <div className="loading-state">
               <span className="h-5 w-5 animate-spin rounded-full border-2 border-gray-300 border-t-gray-700" />
               <span>Loading...</span>
             </div>
