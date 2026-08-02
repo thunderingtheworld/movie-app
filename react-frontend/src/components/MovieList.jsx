@@ -7,6 +7,7 @@ export default function MovieList({
   onToggleWatchlistMovie,
   emptyMessage,
   isInitialLoading = false,
+  error,
   onLoadMoreMovies,
   isLoadingMoreMovies = false,
   variant = "default",
@@ -21,6 +22,13 @@ export default function MovieList({
               <span className="h-5 w-5 animate-spin rounded-full border-2 border-gray-300 border-t-gray-700" />
               <span>Loading...</span>
             </div>
+          )
+        : error
+        ? (
+            <section className="empty-state error-state" role="alert">
+              <strong>We ran into an error</strong>
+              <p>{error}</p>
+            </section>
           )
         : movies.length === 0
         ? (

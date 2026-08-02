@@ -21,6 +21,7 @@ export default function App() {
   const [isMoviesLoading, setIsMoviesLoading] = useState(true);
   const [isLoadingMoreMovies, setIsLoadingMoreMovies] = useState(false);
   const [isWatchlistLoading, setIsWatchlistLoading] = useState(true);
+  const [moviesError, setMoviesError] = useState("");
 
   async function loadMoreMovies() {
     setIsLoadingMoreMovies(true);
@@ -86,13 +87,22 @@ export default function App() {
 
   useEffect(() => {
     async function loadMovies() {
-      const response = await fetch("http://localhost:5000/api/movies?page=1");
-      const data = await response.json();
+      try {
+        const response = await fetch("http://localhost:5000/api/movies?page=1");
 
-      setMovies(data.movies);
-      // currentMoviePage is already 1 so no need to set it
-      setTotalMoviePages(data.total_pages);
-      setIsMoviesLoading(false);
+        if (!response.ok) {
+          throw new Error();
+        }
+
+        const data = await response.json();
+
+        setMovies(data.movies);
+        setTotalMoviePages(data.total_pages);
+      } catch {
+        setMoviesError("Please try again later.");
+      } finally {
+        setIsMoviesLoading(false);
+      }
     }
 
     async function loadWatchlist() {
@@ -154,9 +164,10 @@ export default function App() {
               movies={movies}
               watchlistMovieIds={watchlistMovieIds}
               onToggleWatchlistMovie={toggleWatchlistMovie}
-              isInitialLoading={isNewReleasesLoading}
+              isInitialLoading={!moviesError && isNewReleasesLoading}
               onLoadMoreMovies={hasMoreMovies ? loadMoreMovies : null}
               isLoadingMoreMovies={isLoadingMoreMovies}
+              error={moviesError}
             />
           }
         />

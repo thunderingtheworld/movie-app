@@ -78,6 +78,14 @@
     }
   }
 
+  .error-state {
+    border-color: #9a5bad;
+    box-shadow: 7px 8px 0 #593064;
+
+    strong {
+      color: #f0c9ff;
+    }
+  }
   @media (min-width: 40rem) {
     .movie-grid {
     display: grid;
