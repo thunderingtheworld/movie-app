@@ -11,55 +11,61 @@
     left: 0;
     height: 2px;
     content: "";
-    background: linear-gradient(90deg, var(--movie-cyan), var(--movie-purple) 62%, transparent);
+    background: linear-gradient(90deg, var(--movie-cyan), #5790ff 55%, #9d45db);
+    box-shadow: 0 0 13px #4f91fa, 0 0 24px rgb(73 223 200 / 42%);
   }
 
   .inner {
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    width: min(100% - 3rem, 80rem);
-    min-height: 4.75rem;
+    width: min(90%, 80rem);
+    min-height: 5.5rem;
     margin-inline: auto;
   }
 
   .brand {
     margin-right: auto;
     color: white;
-    font-size: 1.05rem;
-    font-weight: 750;
-    letter-spacing: -0.025em;
+    font-size: 1.125rem;
+    font-weight: 700;
+    letter-spacing: -0.035em;
     text-decoration: none;
   }
 
   .nav-link {
     display: inline-flex;
     align-items: center;
-    gap: 0.5rem;
-    min-height: 2.5rem;
-    padding: 0.5rem 0.75rem;
-    color: var(--movie-muted);
-    font-size: 0.9rem;
-    font-weight: 650;
+    gap: 0.4375rem;
+    min-height: 2.125rem;
+    padding: 0;
+    color: white;
+    font-size: 0.9375rem;
+    font-weight: 700;
     text-decoration: none;
-    transition: color 150ms ease, background-color 150ms ease;
+    transition: color 150ms ease;
+
+    & + .nav-link {
+      margin-left: 2.1875rem;
+    }
 
     &:hover,
     &[aria-current="page"] {
-      color: white;
-      background: #171b30;
+      color: var(--movie-cyan);
     }
 
     b {
       display: grid;
       place-items: center;
-      min-width: 1.55rem;
-      height: 1.55rem;
-      padding-inline: 0.35rem;
-      color: var(--movie-night);
-      font-size: 0.72rem;
-      background: var(--movie-cyan);
-      border-radius: 999px;
+      width: 1.6875rem;
+      height: 1.6875rem;
+      margin-left: 0.4375rem;
+      color: white;
+      font-size: 0.75rem;
+      font-weight: 800;
+      background: #122126;
+      border: 1px solid var(--movie-cyan);
+      box-shadow: 3px 3px 0 #543078;
     }
   }
 
@@ -69,8 +75,11 @@
     }
 
     .nav-link {
-      padding-inline: 0.55rem;
       font-size: 0.82rem;
+
+      & + .nav-link {
+        margin-left: 1rem;
+      }
     }
   }
 }

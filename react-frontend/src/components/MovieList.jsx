@@ -12,7 +12,7 @@ export default function MovieList({
   variant = "default",
 }) {
   return (
-    <main className="movie-page mx-auto max-w-7xl p-6">
+    <main className="movie-page">
       <h1 className="page-title">{title}</h1>
 
       {isInitialLoading
@@ -27,7 +27,7 @@ export default function MovieList({
             <p className="text-gray-500">{emptyMessage}</p>
           )
         : (
-            <section className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-y-10">
+            <section className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
               {movies.map(movie => (
                 <MovieCard
                   key={movie.id}

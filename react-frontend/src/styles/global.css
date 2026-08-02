@@ -7,16 +7,26 @@
   --movie-purple: #7b50d6;
 }
 
-/* “seamless space.png” by n4, CC0: https://opengameart.org/content/seamless-pattern-pack-seamless-spacepng */
+/* "seamless space.png" by n4, CC0: https://opengameart.org/content/seamless-pattern-pack-seamless-spacepng */
 body {
   min-width: 20rem;
   min-height: 100vh;
   color: var(--movie-text);
-  background-color: var(--movie-night);
+  font-family: Manrope, Arial, sans-serif;
+  background-color: #000;
   background-image:
-    linear-gradient(to bottom, transparent 0 22rem, var(--movie-night) 62rem),
+    linear-gradient(to bottom, transparent 0 16.25rem, rgb(0 0 0 / 10%) 26.25rem, rgb(0 0 0 / 32%) 35rem, rgb(0 0 0 / 68%) 43.75rem, #000 49.375rem),
     url("/textures/seamless-space-cc0.png");
   background-repeat: no-repeat, repeat;
   background-position: top, top left;
-  background-size: 100% 100%, 55% auto;
+  background-size: 100% 100%, 27% auto;
+}
+
+@media (max-width: 56.25rem) {
+  body {
+    background-image:
+      linear-gradient(to bottom, transparent 0 14.6875rem, rgb(0 0 0 / 18%) 21.875rem, rgb(0 0 0 / 55%) 31.875rem, #000 41.875rem),
+      url("/textures/seamless-space-cc0.png");
+    background-size: 100% 100%, 43% auto;
+  }
 }

@@ -119,7 +119,7 @@ export default function App() {
             className="brand"
             to="/"
           >
-            Movie Night
+            Movie night
           </Link>
 
           <NavLink
