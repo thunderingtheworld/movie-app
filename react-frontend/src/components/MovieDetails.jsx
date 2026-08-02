@@ -35,12 +35,12 @@ export default function MovieDetails({
         );
 
         if (!response.ok) {
-          throw new Error("Movie could not be loaded.");
+          throw new Error();
         }
 
         setMovie(await response.json());
-      } catch (error) {
-        setError(error.message);
+      } catch {
+        setError("Please try again later.");
       } finally {
         setIsMovieLoading(false);
       }
@@ -71,7 +71,14 @@ export default function MovieDetails({
   }
 
   if (error) {
-    return <main className="movie-details status error">{error}</main>;
+    return (
+      <main className="movie-details status">
+        <section className="loading-state error-message" role="alert">
+          <strong>We ran into an error</strong>
+          <span>{error}</span>
+        </section>
+      </main>
+    );
   }
 
   const isInWatchlist = watchlistMovieIds.includes(movie.id);

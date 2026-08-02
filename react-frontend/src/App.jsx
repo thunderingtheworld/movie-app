@@ -22,6 +22,7 @@ export default function App() {
   const [isLoadingMoreMovies, setIsLoadingMoreMovies] = useState(false);
   const [isWatchlistLoading, setIsWatchlistLoading] = useState(true);
   const [moviesError, setMoviesError] = useState("");
+  const [watchlistError, setWatchlistError] = useState("");
 
   async function loadMoreMovies() {
     setIsLoadingMoreMovies(true);
@@ -106,11 +107,17 @@ export default function App() {
     }
 
     async function loadWatchlist() {
-      const response = await fetch("http://localhost:5000/api/watchlist");
-      const loadedWatchlistMovies = await response.json();
+      try {
+        const response = await fetch("http://localhost:5000/api/watchlist");
 
-      setWatchlistMovies(loadedWatchlistMovies);
-      setIsWatchlistLoading(false);
+        if (!response.ok) throw new Error();
+
+        setWatchlistMovies(await response.json());
+      } catch {
+        setWatchlistError("Please try again later.");
+      } finally {
+        setIsWatchlistLoading(false);
+      }
     }
 
     loadMovies();
@@ -183,6 +190,7 @@ export default function App() {
               emptyMessage="Your watchlist is empty."
               isInitialLoading={isWatchlistLoading}
               variant="watchlist"
+              error={watchlistError}
             />
           }
         />

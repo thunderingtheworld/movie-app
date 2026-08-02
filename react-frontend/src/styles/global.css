@@ -42,3 +42,22 @@ body {
   border: 1px solid #30213f;
   box-shadow: 5px 6px 0 #261735, 0 0 18px rgb(84 224 202 / 12%);
 }
+.error-message {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.35rem;
+  width: min(100%, 32rem);
+  padding: 1.25rem 1.375rem;
+  color: #f0c9ff;
+  border-color: #9a5bad;
+  box-shadow: 7px 8px 0 #593064;
+
+  strong {
+    font-size: 1.125rem;
+  }
+
+  span {
+    color: var(--movie-muted);
+    font-size: 0.875rem;
+  }
+}
