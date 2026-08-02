@@ -60,7 +60,7 @@ export default function MovieDetails({
 
   if (isMovieLoading || isWatchlistLoading) {
     return (
-      <main className="mx-auto flex max-w-5xl items-center gap-2 p-6 text-gray-500">
+      <main className="movie-details status">
         <span className="h-5 w-5 animate-spin rounded-full border-2 border-gray-300 border-t-gray-700" />
         <span>Loading...</span>
       </main>
@@ -68,62 +68,63 @@ export default function MovieDetails({
   }
 
   if (error) {
-    return <main className="mx-auto max-w-5xl p-6 text-red-600">{error}</main>;
+    return <main className="movie-details status error">{error}</main>;
   }
 
   const isInWatchlist = watchlistMovieIds.includes(movie.id);
 
   return (
-    <main className="mx-auto max-w-5xl p-6">
+    <main className="movie-details">
       <button
-        className="cursor-pointer text-gray-600 hover:underline"
+        className="back"
         type="button"
         onClick={() => navigate(-1)}
       >
         ← Back to movies
       </button>
 
-      <article className="mt-6 grid gap-8 sm:grid-cols-[minmax(220px,1fr)_2fr]">
+      <article className="layout">
         {movie.poster_path
           ? (
               <img
-                className="w-full rounded-lg shadow-sm"
+                className="details-poster"
                 src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
                 alt={`${movie.title} poster`}
               />
             )
           : (
-              <div className="flex min-h-80 items-center justify-center rounded-lg bg-gray-100 text-gray-500">
+              <div className="poster-placeholder">
                 No poster available
               </div>
             )}
 
-        <div>
-          <h1 className="text-4xl font-bold">{movie.title}</h1>
+        <div className="movie-details-copy">
+          <h1 className="title">{movie.title}</h1>
 
-          <p className="mt-3 text-gray-500">
+          <p className="facts">
             {[movie.year, formatRuntime(movie.runtime)]
               .filter(Boolean)
               .join(" · ")}
           </p>
 
           {movie.genres.length > 0
-            ? <p className="mt-2 text-gray-600">{movie.genres.join(", ")}</p>
+            ? <p className="genres">{movie.genres.join(", ")}</p>
             : null}
 
-          <p className="mt-5">
-            <span className="text-yellow-500">★</span>{" "}
+          <p className="details-score">
+            <span className="details-star">★</span>{" "}
             <span className="font-semibold">{movie.rating.toFixed(1)}</span>
             <span className="text-gray-500"> / 10</span>
             <span className="ml-2 text-gray-500">
               ({formatVoteCount(movie.vote_count)} {movie.vote_count === 1 ? "vote" : "votes"})
             </span>
           </p>
-          <p className="mt-6 leading-7 text-gray-700">
+          <p className="description">
             {movie.description || "No description available."}
           </p>
 
           <button
+            data-saved={isInWatchlist}
             className={`mt-8 inline-flex h-10 w-24 items-center justify-center rounded border px-3 transition ${
               isInWatchlist
                 ? "border-green-600 bg-green-600 text-white hover:bg-green-700"

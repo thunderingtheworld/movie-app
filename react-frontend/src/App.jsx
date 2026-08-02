@@ -6,6 +6,7 @@ import "./styles/global.css";
 import "./styles/navigation.css";
 import "./styles/movie-list.css";
 import "./styles/movie-card.css";
+import "./styles/movie-details.css";
 
 export default function App() {
   const [movies, setMovies] = useState([]);
@@ -119,7 +120,8 @@ export default function App() {
             className="brand"
             to="/"
           >
-            Movie night
+            <img src="/moon-crescent.png" alt="" />
+            <span>Movie night</span>
           </Link>
 
           <NavLink

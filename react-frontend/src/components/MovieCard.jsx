@@ -35,7 +35,7 @@ export default function MovieCard({
   return (
     <article
       aria-busy={isUpdatingWatchlist}
-      className={`movie-card${isUpdatingWatchlist ? " updating" : ""}`}
+      className={`movie-card${isUpdatingWatchlist ? " updating" : ""}${isInWatchlist ? " saved" : ""}`}
     >
       <Link className="poster" to={`/movies/${movie.id}`}>
         {movie.poster_path !== null
@@ -68,7 +68,7 @@ export default function MovieCard({
           </div>
 
           <button
-            className="save"
+            className={`save${isWatchlistView ? " remove" : isInWatchlist ? " saved" : ""}`}
             disabled={isUpdatingWatchlist}
             onClick={handleWatchlistToggle}
           >

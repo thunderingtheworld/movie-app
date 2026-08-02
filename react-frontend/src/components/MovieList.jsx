@@ -24,7 +24,10 @@ export default function MovieList({
           )
         : movies.length === 0
         ? (
-            <p className="text-gray-500">{emptyMessage}</p>
+            <section className="empty-state">
+              <strong>Nothing here yet</strong>
+              <p>{emptyMessage}</p>
+            </section>
           )
         : (
             <section className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
