@@ -1,5 +1,6 @@
 import { useNavigate, useParams } from "react-router";
 import { useEffect, useState } from "react";
+import API_URL from "../config";
 import formatVoteCount from "../utils/formatVoteCount";
 import { HeartIcon } from "./ActionIcons";
 
@@ -19,6 +20,7 @@ export default function MovieDetails({
   watchlistMovieIds,
   onToggleWatchlistMovie,
   isWatchlistLoading,
+  actionError,
 }) {
   const { movieId } = useParams();
   const navigate = useNavigate();
@@ -31,7 +33,7 @@ export default function MovieDetails({
     async function loadMovie() {
       try {
         const response = await fetch(
-          `http://localhost:5000/api/movies/${movieId}`
+          `${API_URL}/movies/${movieId}`
         );
 
         if (!response.ok) {
@@ -70,12 +72,12 @@ export default function MovieDetails({
     );
   }
 
-  if (error) {
+  if (error || actionError) {
     return (
       <main className="movie-details status">
         <section className="loading-state error-message" role="alert">
           <strong>We ran into an error</strong>
-          <span>{error}</span>
+          <span>{error || actionError}</span>
         </section>
       </main>
     );

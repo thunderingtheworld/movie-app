@@ -51,7 +51,7 @@ export default function MovieList({
             </section>
           )}
       {/* Only render pagination when the parent provides a load-more action. */}
-      {onLoadMoreMovies && !isInitialLoading && movies.length > 0
+      {onLoadMoreMovies && !isInitialLoading && !error && movies.length > 0
         ? (
             <div className="mt-8 flex justify-center">
               <button

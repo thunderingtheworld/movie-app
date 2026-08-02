@@ -10,4 +10,4 @@ echo "API: http://localhost:5000"
 
 flask --app app run --debug
 
-# run this via "bash bash_start_backend.sh"
+# run this via "bash start_backend.sh"

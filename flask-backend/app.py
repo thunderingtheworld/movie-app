@@ -9,7 +9,7 @@ from flask_cors import CORS
 load_dotenv()
 
 app = Flask(__name__)
-CORS(app) # TODO: Restrict allowed origins before deployment.
+CORS(app, origins=os.getenv("FRONTEND_URL", "http://localhost:5173"))
 
 TMDB_TOKEN = os.getenv("TMDB_TOKEN")
 app.config["DATABASE"] = os.path.join(app.instance_path, "movie-app.sqlite3")

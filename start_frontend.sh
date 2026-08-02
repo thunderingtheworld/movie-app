@@ -9,4 +9,4 @@ echo "Open: http://localhost:5173"
 
 npm run dev
 
-# run like "bash bash_start_frontend.sh"
+# run like "bash start_frontend.sh"

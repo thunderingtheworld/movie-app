@@ -1,5 +1,6 @@
 import { Link, NavLink, Route, Routes } from "react-router";
 import { useEffect, useState } from "react";
+import API_URL from "./config";
 import About from "./components/About";
 import Footer from "./components/Footer";
 import MovieDetails from "./components/MovieDetails";
@@ -23,19 +24,19 @@ export default function App() {
   const [isWatchlistLoading, setIsWatchlistLoading] = useState(true);
   const [moviesError, setMoviesError] = useState("");
   const [watchlistError, setWatchlistError] = useState("");
+  const [actionError, setActionError] = useState("");
 
   async function loadMoreMovies() {
     setIsLoadingMoreMovies(true);
+    setActionError("");
     const nextPage = currentMoviePage + 1;
 
     try {
       const response = await fetch(
-        `http://localhost:5000/api/movies?page=${nextPage}`
+        `${API_URL}/movies?page=${nextPage}`
       );
 
-      if (!response.ok) {
-        return;
-      }
+      if (!response.ok) throw new Error();
 
       const data = await response.json();
       const newMovies = data.movies;
@@ -46,50 +47,51 @@ export default function App() {
       ]);
       setCurrentMoviePage(data.page);
       setTotalMoviePages(data.total_pages);
+    } catch {
+      setMoviesError("Please try again later.");
     } finally {
       setIsLoadingMoreMovies(false);
     }
   }
 
   async function toggleWatchlistMovie(movieToToggle) {
-    const wasInWatchlist = watchlistMovieIds.includes(movieToToggle.id);
-    let response;
+    setActionError("");
 
-    if (wasInWatchlist) {
-      response = await fetch(
-        `http://localhost:5000/api/watchlist/${movieToToggle.id}`,
-        { method: "DELETE" }
-      );
-    } else {
-      response = await fetch("http://localhost:5000/api/watchlist", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(movieToToggle),
-      });
-    }
+    try {
+      const wasInWatchlist = watchlistMovieIds.includes(movieToToggle.id);
+      let response;
 
-    if (!response.ok) {
-      return;
-    }
+      if (wasInWatchlist) {
+        response = await fetch(
+          `${API_URL}/watchlist/${movieToToggle.id}`,
+          { method: "DELETE" }
+        );
+      } else {
+        response = await fetch(`${API_URL}/watchlist`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(movieToToggle),
+        });
+      }
 
-    if (wasInWatchlist) {
-      setWatchlistMovies(previousWatchlistMovies =>
-        previousWatchlistMovies.filter(
-          watchlistMovie => watchlistMovie.id !== movieToToggle.id
-        )
-      );
-    } else {
-      setWatchlistMovies(previousWatchlistMovies => [
-        movieToToggle,
-        ...previousWatchlistMovies,
-      ]);
+      if (!response.ok) throw new Error();
+
+      if (wasInWatchlist) {
+        setWatchlistMovies(previousMovies =>
+          previousMovies.filter(movie => movie.id !== movieToToggle.id)
+        );
+      } else {
+        setWatchlistMovies(previousMovies => [movieToToggle, ...previousMovies]);
+      }
+    } catch {
+      setActionError("We could not update your watchlist. Please try again later.");
     }
   }
 
   useEffect(() => {
     async function loadMovies() {
       try {
-        const response = await fetch("http://localhost:5000/api/movies?page=1");
+        const response = await fetch(`${API_URL}/movies?page=1`);
 
         if (!response.ok) {
           throw new Error();
@@ -108,7 +110,7 @@ export default function App() {
 
     async function loadWatchlist() {
       try {
-        const response = await fetch("http://localhost:5000/api/watchlist");
+        const response = await fetch(`${API_URL}/watchlist`);
 
         if (!response.ok) throw new Error();
 
@@ -139,6 +141,7 @@ export default function App() {
           <Link
             className="brand"
             to="/"
+            onClick={() => setActionError("")}
           >
             <img src="/moon-crescent.png" alt="" />
             <span>Movie night</span>
@@ -148,12 +151,14 @@ export default function App() {
             className="nav-link"
             end
             to="/"
+            onClick={() => setActionError("")}
           >
             New releases
           </NavLink>
           <NavLink
             className="nav-link"
             to="/watchlist"
+            onClick={() => setActionError("")}
           >
             Watchlist {watchlistMovieIds.length > 0
               ? <b>{watchlistMovieIds.length}</b>
@@ -174,7 +179,7 @@ export default function App() {
               isInitialLoading={!moviesError && isNewReleasesLoading}
               onLoadMoreMovies={hasMoreMovies ? loadMoreMovies : null}
               isLoadingMoreMovies={isLoadingMoreMovies}
-              error={moviesError}
+              error={moviesError || actionError}
             />
           }
         />
@@ -190,7 +195,7 @@ export default function App() {
               emptyMessage="Your watchlist is empty."
               isInitialLoading={isWatchlistLoading}
               variant="watchlist"
-              error={watchlistError}
+              error={watchlistError || actionError}
             />
           }
         />
@@ -204,6 +209,7 @@ export default function App() {
               watchlistMovieIds={watchlistMovieIds}
               onToggleWatchlistMovie={toggleWatchlistMovie}
               isWatchlistLoading={isWatchlistLoading}
+              actionError={actionError}
             />
           }
         />
