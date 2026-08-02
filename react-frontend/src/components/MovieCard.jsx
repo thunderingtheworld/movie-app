@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router";
+import { HeartIcon, XIcon } from "./ActionIcons";
 import formatVoteCount from "../utils/formatVoteCount";
 
 function getVoteCountClass(voteCount) {
@@ -35,7 +36,7 @@ export default function MovieCard({
   return (
     <article
       aria-busy={isUpdatingWatchlist}
-      className={`movie-card${isUpdatingWatchlist ? " updating" : ""}${isInWatchlist ? " saved" : ""}`}
+      className={`movie-card${isUpdatingWatchlist ? " updating" : ""}${isInWatchlist ? " saved" : ""}${isWatchlistView ? " watchlist" : ""}`}
     >
       <Link className="poster" to={`/movies/${movie.id}`}>
         {movie.poster_path !== null
@@ -74,7 +75,7 @@ export default function MovieCard({
           >
             {isUpdatingWatchlist
               ? <span className="spinner" />
-              : <><span aria-hidden="true">{isWatchlistView ? "×" : isInWatchlist ? "♥" : "♡"}</span>{isWatchlistView ? "Remove" : isInWatchlist ? "Saved" : "Save"}</>}
+              : <>{isWatchlistView ? <XIcon /> : <HeartIcon filled={isInWatchlist} />}<span>{isWatchlistView ? "Remove" : isInWatchlist ? "Saved" : "Save"}</span></>}
           </button>
         </div>
       </div>

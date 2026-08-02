@@ -1,5 +1,7 @@
 import { Link, NavLink, Route, Routes } from "react-router";
 import { useEffect, useState } from "react";
+import About from "./components/About";
+import Footer from "./components/Footer";
 import MovieDetails from "./components/MovieDetails";
 import MovieList from "./components/MovieList";
 import "./styles/global.css";
@@ -7,6 +9,7 @@ import "./styles/navigation.css";
 import "./styles/movie-list.css";
 import "./styles/movie-card.css";
 import "./styles/movie-details.css";
+import "./styles/footer-about.css";
 
 export default function App() {
   const [movies, setMovies] = useState([]);
@@ -173,6 +176,8 @@ export default function App() {
           }
         />
 
+        <Route path="/about" element={<About />} />
+
         <Route
           path="/movies/:movieId"
           element={
@@ -184,6 +189,8 @@ export default function App() {
           }
         />
       </Routes>
+
+      <Footer />
     </>
   );
 }

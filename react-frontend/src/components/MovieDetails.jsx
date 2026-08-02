@@ -1,6 +1,7 @@
 import { useNavigate, useParams } from "react-router";
 import { useEffect, useState } from "react";
 import formatVoteCount from "../utils/formatVoteCount";
+import { HeartIcon } from "./ActionIcons";
 
 function formatRuntime(runtime) {
   if (!runtime) return null;
@@ -98,7 +99,7 @@ export default function MovieDetails({
               </div>
             )}
 
-        <div className="movie-details-copy">
+        <div className="movie-details-copy" data-saved={isInWatchlist}>
           <h1 className="title">{movie.title}</h1>
 
           <p className="facts">
@@ -135,7 +136,7 @@ export default function MovieDetails({
           >
             {isUpdatingWatchlist
               ? <span className="h-5 w-5 animate-spin rounded-full border-2 border-current border-r-transparent" />
-              : (isInWatchlist ? "✓ Saved" : "♡ Save")}
+              : <><HeartIcon filled={isInWatchlist} /><span>{isInWatchlist ? "Saved" : "Save"}</span></>}
           </button>
         </div>
       </article>

@@ -1,5 +1,5 @@
 .movie-details {
-  width: min(90%, 64rem);
+  width: min(90%, 72rem);
   min-height: calc(100vh - 5.5rem);
   margin-inline: auto;
   padding: 3rem 0 5.5rem;
@@ -16,25 +16,29 @@
   }
 
   .back {
-    padding: 0;
-    color: #a8ded8;
-    font-size: 0.8125rem;
-    font-weight: 700;
-    background: transparent;
-    border: 0;
+    padding: 0.55rem 0.75rem;
+    color: white;
+    font-size: 0.875rem;
+    font-weight: 800;
+    background: #111527;
+    border: 1px solid #3d456a;
+    box-shadow: 3px 3px 0 #4e2c84;
     cursor: pointer;
 
     &:hover {
-      color: var(--movie-cyan);
-      text-decoration: underline;
-      text-underline-offset: 0.25em;
+      color: #071411;
+      text-decoration: none;
+      background: var(--movie-cyan);
+      border-color: var(--movie-cyan);
+      box-shadow: 4px 4px 0 #5736a1, 0 0 16px rgb(97 233 211 / 38%);
+      transform: translate(-1px, -1px);
     }
   }
 
   .layout {
     display: grid;
-    grid-template-columns: minmax(13.75rem, 0.85fr) minmax(0, 1.65fr);
-    gap: clamp(2rem, 5vw, 4.5rem);
+    grid-template-columns: minmax(15rem, 0.8fr) minmax(0, 1.55fr);
+    gap: clamp(1.25rem, 2.5vw, 2rem);
     align-items: start;
     margin-top: 2rem;
   }
@@ -62,11 +66,19 @@
   }
 
   .movie-details-copy {
-    padding: clamp(1.25rem, 3vw, 2.25rem);
+    min-width: 0;
+    min-height: clamp(27rem, 42vw, 32rem);
+    padding: clamp(1.75rem, 3.5vw, 2.75rem);
     color: var(--movie-text);
     background: #08070f;
     border: 1px solid #30213f;
     box-shadow: 8px 9px 0 #261735;
+    transition: border-color 150ms ease, box-shadow 150ms ease;
+
+    &[data-saved="true"] {
+      border-color: #426d70;
+      box-shadow: 8px 9px 0 #603a91, 0 0 24px rgb(97 233 211 / 24%);
+    }
   }
 
   .title {
@@ -125,6 +137,7 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    gap: 0.35rem;
     min-width: 6.5rem;
     height: 2.5rem;
     margin-top: 2rem;
@@ -139,6 +152,11 @@
     cursor: pointer;
     transition: color 150ms ease, background 150ms ease, border-color 150ms ease, box-shadow 150ms ease, transform 150ms ease;
 
+    svg {
+      width: 0.9375rem;
+      height: 0.9375rem;
+    }
+
     &:hover {
       color: var(--movie-cyan);
       border-color: var(--movie-cyan);
@@ -146,10 +164,10 @@
     }
 
     &[data-saved="true"] {
-      color: #bffff2;
-      background: #102524;
-      border-color: #46cdb8;
-      box-shadow: 4px 4px 0 #315f70, 0 0 14px rgb(97 233 211 / 24%);
+      color: #071411;
+      background: #74efda;
+      border-color: #bffff2;
+      box-shadow: 5px 5px 0 #603a91, 0 0 20px rgb(97 233 211 / 48%);
     }
 
     &:disabled {

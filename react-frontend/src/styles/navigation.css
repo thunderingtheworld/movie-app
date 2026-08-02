@@ -6,10 +6,11 @@
 
   &::after {
     position: absolute;
-    right: 0;
     bottom: 0;
-    left: 0;
+    left: 50%;
+    width: min(90%, 80rem);
     height: 2px;
+    transform: translateX(-50%);
     content: "";
     background: linear-gradient(90deg, var(--movie-cyan), #5790ff 55%, #9d45db);
     box-shadow: 0 0 13px #4f91fa, 0 0 24px rgb(73 223 200 / 42%);
