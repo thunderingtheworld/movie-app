@@ -1,0 +1,44 @@
+.movie-page {
+  min-height: calc(100vh - 4.75rem);
+
+  .page-title {
+    width: max-content;
+    max-width: 100%;
+    margin: 0 auto 1.5rem;
+    color: white;
+    font-size: clamp(2rem, 4vw, 3.25rem);
+    line-height: 1;
+    letter-spacing: -0.045em;
+  }
+
+  .load-more {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 2.75rem;
+    padding: 0.6rem 1.4rem;
+    color: white;
+    font-weight: 700;
+    background: var(--movie-panel);
+    border: 1px solid var(--movie-cyan);
+    box-shadow: 5px 5px 0 #553395;
+    transition: background-color 150ms ease, box-shadow 150ms ease;
+
+    &:hover {
+      background: #282041;
+      box-shadow: 5px 5px 0 #7049bd;
+    }
+
+    &:disabled {
+      cursor: default;
+      opacity: 0.7;
+    }
+  }
+
+  @media (min-width: 40rem) {
+    .load-more {
+      width: auto;
+    }
+  }
+}

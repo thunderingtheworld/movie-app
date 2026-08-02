@@ -2,14 +2,10 @@ import { Link, NavLink, Route, Routes } from "react-router";
 import { useEffect, useState } from "react";
 import MovieDetails from "./components/MovieDetails";
 import MovieList from "./components/MovieList";
-
-function getNavLinkClasses({ isActive }) {
-  const baseClasses = "rounded-full px-3 py-2 transition";
-
-  return isActive
-    ? `${baseClasses} bg-gray-100 font-medium text-gray-900`
-    : `${baseClasses} text-gray-600 hover:bg-gray-50 hover:text-gray-900`;
-}
+import "./styles/global.css";
+import "./styles/navigation.css";
+import "./styles/movie-list.css";
+import "./styles/movie-card.css";
 
 export default function App() {
   const [movies, setMovies] = useState([]);
@@ -111,38 +107,34 @@ export default function App() {
 
   // We have more movies unless we are at last page (or out of bounds):
   const hasMoreMovies = currentMoviePage < totalMoviePages;
-  
+
   // We want to both have movies & know if we should mark them as in watchlist already:
   const isNewReleasesLoading = isMoviesLoading || isWatchlistLoading;
 
   return (
     <>
-      <nav className="border-b border-gray-200 bg-white shadow-sm">
-        <div className="mx-auto flex max-w-7xl items-center gap-2 px-6 py-4">
+      <nav className="movie-nav">
+        <div className="inner">
           <Link
-            className="mr-auto flex items-center gap-2 text-xl font-bold tracking-tight"
+            className="brand"
             to="/"
           >
-            <img
-              className="size-8"
-              src="/favicon.svg"
-              alt=""
-            />
             Movie Night
           </Link>
 
           <NavLink
-            className={getNavLinkClasses}
+            className="nav-link"
+            end
             to="/"
           >
             New releases
           </NavLink>
           <NavLink
-            className={getNavLinkClasses}
+            className="nav-link"
             to="/watchlist"
           >
             Watchlist {watchlistMovieIds.length > 0
-              ? `(${watchlistMovieIds.length})`
+              ? <b>{watchlistMovieIds.length}</b>
               : null}
           </NavLink>
         </div>
@@ -153,7 +145,7 @@ export default function App() {
           path="/"
           element={
             <MovieList
-              title="✨ New releases"
+              title="New releases"
               movies={movies}
               watchlistMovieIds={watchlistMovieIds}
               onToggleWatchlistMovie={toggleWatchlistMovie}
@@ -168,7 +160,7 @@ export default function App() {
           path="/watchlist"
           element={
             <MovieList
-              title="❤️ Watchlist"
+              title="Watchlist"
               movies={watchlistMovies}
               watchlistMovieIds={watchlistMovieIds}
               onToggleWatchlistMovie={toggleWatchlistMovie}

@@ -12,8 +12,8 @@ export default function MovieList({
   variant = "default",
 }) {
   return (
-    <main className="mx-auto max-w-7xl p-6">
-      <h1 className="mb-6 text-3xl font-bold">{title}</h1>
+    <main className="movie-page mx-auto max-w-7xl p-6">
+      <h1 className="page-title">{title}</h1>
 
       {isInitialLoading
         ? (
@@ -27,7 +27,7 @@ export default function MovieList({
             <p className="text-gray-500">{emptyMessage}</p>
           )
         : (
-            <section className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <section className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-y-10">
               {movies.map(movie => (
                 <MovieCard
                   key={movie.id}
@@ -44,7 +44,7 @@ export default function MovieList({
         ? (
             <div className="mt-8 flex justify-center">
               <button
-                className="inline-flex h-10 w-full items-center justify-center rounded border border-gray-300 bg-white px-5 text-gray-700 shadow-sm transition hover:bg-gray-50 disabled:cursor-default disabled:opacity-70 sm:w-auto"
+                className="load-more"
                 disabled={isLoadingMoreMovies}
                 onClick={onLoadMoreMovies}
               >

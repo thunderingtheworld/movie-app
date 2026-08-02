@@ -1,0 +1,22 @@
+:root {
+  --movie-night: #080b17;
+  --movie-panel: #111527;
+  --movie-text: #f7f5ff;
+  --movie-muted: #b6b5c9;
+  --movie-cyan: #61e7df;
+  --movie-purple: #7b50d6;
+}
+
+/* “seamless space.png” by n4, CC0: https://opengameart.org/content/seamless-pattern-pack-seamless-spacepng */
+body {
+  min-width: 20rem;
+  min-height: 100vh;
+  color: var(--movie-text);
+  background-color: var(--movie-night);
+  background-image:
+    linear-gradient(to bottom, transparent 0 22rem, var(--movie-night) 62rem),
+    url("/textures/seamless-space-cc0.png");
+  background-repeat: no-repeat, repeat;
+  background-position: top, top left;
+  background-size: 100% 100%, 55% auto;
+}
