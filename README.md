@@ -1,10 +1,10 @@
-# Movie Night
+# Movie night
 
 A full-stack movie discovery app for browsing new releases and saving a watchlist.
 
 **Stack:** React, Flask, SQLite, CSS, and the TMDB API.
 
-![Movie Night new releases page](docs/movie-night.png)
+![Movie night new releases page](docs/movie-night.png)
 
 ## Local setup
 
