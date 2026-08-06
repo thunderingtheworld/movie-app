@@ -1,10 +1,34 @@
 # Movie night
 
-A full-stack movie discovery app for browsing new releases and saving a watchlist.
+A full-stack movie discovery app built around how I like to find new movies: narrowing recent releases into a manageable shortlist using rating and audience-vote thresholds, then saving interesting ones to a watchlist.
+
+The filtering thresholds are fixed for this MVP. More features may be added in the future.
 
 **Stack:** React, Flask, SQLite, CSS, and the TMDB API.
 
-![Movie night new releases page](docs/movie-night.png)
+## Features
+
+- Filtered view of recent movie releases
+- Movie details
+- Persistent watchlist
+- Responsive layouts
+- Loading and error states
+
+## Screenshots
+
+**Live demo coming soon.**
+
+### New releases
+
+[![New releases](docs/new_releases.png)](docs/new_releases.png)
+
+### Movie details
+
+[![Movie details](docs/movie_details.png)](docs/movie_details.png)
+
+### Mobile view
+
+[![Mobile view](docs/mobile_view.png)](docs/mobile_view.png)
 
 ## Local setup
 
