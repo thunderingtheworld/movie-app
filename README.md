@@ -34,4 +34,4 @@ bash start_frontend.sh
 
 Set `FRONTEND_URL` to the deployed frontend origin and `VITE_API_URL` to the deployed Flask URL, for example `https://api.example.com/api`.
 
-Asset credits and licensing notes are in [`react-frontend/public/assets/README.md`](react-frontend/public/assets/README.md).
+Asset credits and licensing notes are in [`/react-frontend/public/ASSETS.md`](/react-frontend/public/ASSETS.md). 
