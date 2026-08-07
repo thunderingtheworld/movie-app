@@ -12,7 +12,10 @@ app = Flask(__name__)
 CORS(app, origins=os.getenv("FRONTEND_URL", "http://localhost:5173"))
 
 TMDB_TOKEN = os.getenv("TMDB_TOKEN")
-app.config["DATABASE"] = os.path.join(app.instance_path, "movie-app.sqlite3")
+app.config["DATABASE"] = os.getenv(
+    "DATABASE_PATH",
+    os.path.join(app.instance_path, "movie-app.sqlite3"),
+)
 
 
 def get_db():

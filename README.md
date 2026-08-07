@@ -53,9 +53,11 @@ bash start_frontend.sh
 
 ## Deployment variables
 
-- Backend: `TMDB_TOKEN` and `FRONTEND_URL`
+- Backend: `TMDB_TOKEN`, `FRONTEND_URL`, and `DATABASE_PATH`
 - Frontend: `VITE_API_URL`, including the `/api` path
 
 Set `FRONTEND_URL` to the deployed frontend origin and `VITE_API_URL` to the deployed Flask URL, for example `https://api.example.com/api`.
+
+The optional `DATABASE_PATH` variable controls where Flask stores the SQLite database; locally it defaults to `flask-backend/instance/`.
 
 Asset credits and licensing notes are in [`/react-frontend/public/ASSETS.md`](/react-frontend/public/ASSETS.md). 
