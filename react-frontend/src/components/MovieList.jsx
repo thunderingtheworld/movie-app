@@ -2,6 +2,7 @@ import MovieCard from "./MovieCard";
 
 export default function MovieList({
   title,
+  subtitle,
   movies,
   watchlistMovieIds,
   onToggleWatchlistMovie,
@@ -15,6 +16,7 @@ export default function MovieList({
   return (
     <main className="movie-page">
       <h1 className="page-title">{title}</h1>
+      {subtitle ? <p className="page-subtitle">{subtitle}</p> : null}
 
       {isInitialLoading
         ? (

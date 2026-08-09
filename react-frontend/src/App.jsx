@@ -173,6 +173,7 @@ export default function App() {
           element={
             <MovieList
               title="New releases"
+              subtitle="Recent, highly rated films worth a look."
               movies={movies}
               watchlistMovieIds={watchlistMovieIds}
               onToggleWatchlistMovie={toggleWatchlistMovie}
