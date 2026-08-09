@@ -9,6 +9,7 @@ import "./styles/global.css";
 import "./styles/navigation.css";
 import "./styles/movie-list.css";
 import "./styles/movie-card.css";
+import "./styles/saved-card.css";
 import "./styles/movie-details.css";
 import "./styles/footer-about.css";
 

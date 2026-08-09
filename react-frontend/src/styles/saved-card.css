@@ -1,0 +1,71 @@
+.movie-card.saved:not(.watchlist) {
+  .poster::after {
+    display: block;
+    background: rgb(97 231 223 / 13%);
+  }
+
+  .poster {
+    border-color: #78e9df;
+    box-shadow: 7px 8px 0 #328f90, 0 0 12px rgb(97 231 223 / 16%);
+
+    &:hover {
+      border-color: #b9fff9;
+      box-shadow: 10px 12px 0 #45a6a3, 0 0 24px rgb(97 231 223 / 28%);
+      transform: translate(-2px, -3px);
+    }
+  }
+
+  .metadata {
+    background: linear-gradient(105deg, #102829 0 26%, #090d14 70%);
+    border-color: #4dbdb7;
+    border-left-width: 1px;
+    box-shadow: 7px 8px 0 #283757, 0 0 10px rgb(97 231 223 / 10%);
+  }
+
+  .save.saved {
+    color: #061412;
+    background: #61e7df;
+    background-image: none;
+    border-color: #8ff9f1;
+    box-shadow: 3px 3px 0 #5736a1;
+
+    svg { color: inherit; }
+
+    &:hover {
+      color: #080b17;
+      background: #8ff9f1;
+      border-color: #b9fff9;
+      box-shadow: 5px 5px 0 #5736a1;
+      transform: translate(-1px, -1px);
+    }
+  }
+}
+
+.movie-card:not(.saved) .save svg {
+  color: white;
+}
+
+.movie-card:not(.saved) .save:hover svg {
+  color: inherit;
+}
+
+.movie-card:not(.saved) .save:hover svg path {
+  fill: currentColor;
+}
+
+@media (max-width: 35.999rem) {
+  .movie-card.saved:not(.watchlist) {
+    color: #4dbdb7;
+    background: radial-gradient(ellipse at 50% 88%, rgb(97 231 223 / 12%), transparent 62%), #08070f;
+    border-color: #4dbdb7;
+    border-left-width: 1px;
+    box-shadow: 7px 8px 0 #283757;
+
+    .metadata {
+      background: transparent;
+      border: 0;
+      border-top: 1px solid #4dbdb7;
+      box-shadow: none;
+    }
+  }
+}
