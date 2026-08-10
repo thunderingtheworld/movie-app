@@ -157,8 +157,8 @@
     transition: color 150ms ease, background 150ms ease, border-color 150ms ease, box-shadow 150ms ease, transform 150ms ease;
 
     svg {
-      width: 0.9375rem;
-      height: 0.9375rem;
+      width: 0.75rem;
+      height: 0.75rem;
     }
 
     &:hover {

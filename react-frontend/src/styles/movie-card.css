@@ -208,8 +208,8 @@
 
     svg {
       flex: none;
-      width: 0.875rem;
-      height: 0.875rem;
+      width: 0.625rem;
+      height: 0.625rem;
       color: var(--movie-cyan);
     }
 
