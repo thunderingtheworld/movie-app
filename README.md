@@ -10,13 +10,15 @@ The filtering thresholds are fixed for this MVP. More features may be added in t
 
 - Filtered view of recent movie releases
 - Movie details
-- Persistent watchlist
+- Persistent, browser-specific watchlists without sign-in
 - Responsive layouts
 - Loading and error states
 
-## Screenshots
+Watchlists use anonymous users to avoid sign-in friction now, while preserving a natural path to accounts later.
 
-**Live demo coming soon.**
+## Live demo and screenshots
+
+**[Live demo](https://movie-night-alpha-liart.vercel.app/)**
 
 ### New releases
 
@@ -58,6 +60,6 @@ bash start_frontend.sh
 
 Set `FRONTEND_URL` to the deployed frontend origin and `VITE_API_URL` to the deployed Flask URL, for example `https://api.example.com/api`.
 
-The optional `DATABASE_PATH` variable controls where Flask stores the SQLite database; locally it defaults to `flask-backend/instance/`.
+The optional `DATABASE_PATH` variable controls where Flask stores the SQLite database; locally it defaults to `flask-backend/instance/`. In production, point it to persistent writable storage.
 
 Asset credits and licensing notes are in [`/react-frontend/public/ASSETS.md`](/react-frontend/public/ASSETS.md). 

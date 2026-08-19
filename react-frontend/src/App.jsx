@@ -5,6 +5,7 @@ import About from "./components/About";
 import Footer from "./components/Footer";
 import MovieDetails from "./components/MovieDetails";
 import MovieList from "./components/MovieList";
+import getAnonymousUserId from "./utils/anonymousUserId";
 import "./styles/global.css";
 import "./styles/navigation.css";
 import "./styles/movie-list.css";
@@ -23,6 +24,7 @@ export default function App() {
   const [isMoviesLoading, setIsMoviesLoading] = useState(true);
   const [isLoadingMoreMovies, setIsLoadingMoreMovies] = useState(false);
   const [isWatchlistLoading, setIsWatchlistLoading] = useState(true);
+  
   const [moviesError, setMoviesError] = useState("");
   const [watchlistError, setWatchlistError] = useState("");
   const [actionError, setActionError] = useState("");
@@ -65,12 +67,18 @@ export default function App() {
       if (wasInWatchlist) {
         response = await fetch(
           `${API_URL}/watchlist/${movieToToggle.id}`,
-          { method: "DELETE" }
+          {
+            method: "DELETE",
+            headers: { "X-Anonymous-User-ID": getAnonymousUserId() },
+          }
         );
       } else {
         response = await fetch(`${API_URL}/watchlist`, {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+            "X-Anonymous-User-ID": getAnonymousUserId(),
+          },
           body: JSON.stringify(movieToToggle),
         });
       }
@@ -111,7 +119,9 @@ export default function App() {
 
     async function loadWatchlist() {
       try {
-        const response = await fetch(`${API_URL}/watchlist`);
+        const response = await fetch(`${API_URL}/watchlist`, {
+          headers: { "X-Anonymous-User-ID": getAnonymousUserId() },
+        });
 
         if (!response.ok) throw new Error();
 

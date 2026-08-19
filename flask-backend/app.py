@@ -1,5 +1,6 @@
 import os
 import sqlite3
+from uuid import UUID
 
 import requests
 from dotenv import load_dotenv
@@ -22,20 +23,19 @@ def get_db():
     os.makedirs(app.instance_path, exist_ok=True)
     database = sqlite3.connect(app.config["DATABASE"])
     database.row_factory = sqlite3.Row
-    database.execute(
-        """
-        CREATE TABLE IF NOT EXISTS watchlist (
-            added_order INTEGER PRIMARY KEY AUTOINCREMENT,
-            movie_id INTEGER NOT NULL UNIQUE,
-            title TEXT NOT NULL,
-            year INTEGER,
-            rating REAL NOT NULL,
-            vote_count INTEGER NOT NULL,
-            poster_path TEXT
-        )
-        """
-    )
+    database.execute("PRAGMA foreign_keys = ON")
+    with app.open_resource("schema.sql") as schema:
+        database.executescript(schema.read().decode("utf-8"))
     return database
+
+
+def get_anonymous_user_id():
+    user_id = request.headers.get("X-Anonymous-User-ID")
+
+    try:
+        return str(UUID(user_id))
+    except (AttributeError, TypeError, ValueError):
+        return None
 
 
 @app.get("/")
@@ -142,19 +142,31 @@ def get_movie(movie_id):
 
 @app.get("/api/watchlist")
 def get_watchlist():
+    user_id = get_anonymous_user_id()
+    if user_id is None:
+        return jsonify({"error": "anonymous user ID is missing or invalid"}), 400
+
     with get_db() as database:
         movies = database.execute(
             """
-            SELECT movie_id AS id, title, year, rating, vote_count, poster_path
+            SELECT movies.id, movies.title, movies.year, movies.rating,
+                   movies.vote_count, movies.poster_path
             FROM watchlist
-            ORDER BY added_order DESC
-            """
+            JOIN movies ON movies.id = watchlist.movie_id
+            WHERE watchlist.user_id = ?
+            ORDER BY watchlist.rowid DESC
+            """,
+            (user_id,),
         ).fetchall()
     return jsonify([dict(movie) for movie in movies])
 
 
 @app.post("/api/watchlist")
 def add_to_watchlist():
+    user_id = get_anonymous_user_id()
+    if user_id is None:
+        return jsonify({"error": "anonymous user ID is missing or invalid"}), 400
+
     movie = request.get_json(silent=True)
     required_fields = ("id", "title")
 
@@ -166,8 +178,15 @@ def add_to_watchlist():
     with get_db() as database:
         database.execute(
             """
-            INSERT OR REPLACE INTO watchlist
-                (movie_id, title, year, rating, vote_count, poster_path)
+            INSERT OR IGNORE INTO users (id)
+            VALUES (?)
+            """,
+            (user_id,),
+        )
+        database.execute(
+            """
+            INSERT OR IGNORE INTO movies
+                (id, title, year, rating, vote_count, poster_path)
             VALUES (?, ?, ?, ?, ?, ?)
             """,
             (
@@ -179,13 +198,27 @@ def add_to_watchlist():
                 movie.get("poster_path"),
             ),
         )
+        database.execute(
+            """
+            INSERT OR IGNORE INTO watchlist (user_id, movie_id)
+            VALUES (?, ?)
+            """,
+            (user_id, movie["id"]),
+        )
     return jsonify(movie), 201
 
 
 @app.delete("/api/watchlist/<int:movie_id>")
 def remove_from_watchlist(movie_id):
+    user_id = get_anonymous_user_id()
+    if user_id is None:
+        return jsonify({"error": "anonymous user ID is missing or invalid"}), 400
+
     with get_db() as database:
-        database.execute("DELETE FROM watchlist WHERE movie_id = ?", (movie_id,))
+        database.execute(
+            "DELETE FROM watchlist WHERE user_id = ? AND movie_id = ?",
+            (user_id, movie_id),
+        )
     return "", 204
 
 
