@@ -11,7 +11,16 @@ export default function About() {
 
         <div className="tmdb-credit">
           <a href="https://www.themoviedb.org" target="_blank" rel="noreferrer">
-            <img src="/tmdb-logo.svg" alt="The Movie Database (TMDB)" />
+            <img
+              className="tmdb-logo-stacked"
+              src="/tmdb-logo.svg"
+              alt="The Movie Database (TMDB)"
+            />
+            <img
+              className="tmdb-logo-long"
+              src="/tmdb-logo-long.svg"
+              alt="The Movie Database (TMDB)"
+            />
           </a>
           <div>
             <h2>Movie data</h2>

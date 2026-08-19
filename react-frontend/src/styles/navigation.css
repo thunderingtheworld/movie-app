@@ -61,9 +61,24 @@
       margin-left: 2.1875rem;
     }
 
-    &:hover,
-    &[aria-current="page"] {
+    &:hover {
       color: var(--movie-cyan);
+    }
+
+    .nav-label {
+      position: relative;
+      line-height: 1.6875rem;
+    }
+
+    &[aria-current="page"] .nav-label::after {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      height: 1px;
+      content: "";
+      background: var(--movie-cyan);
+      box-shadow: 0 0 4px var(--movie-cyan), 0 0 11px rgb(97 231 223 / 62%);
     }
 
     b {
@@ -71,7 +86,7 @@
       place-items: center;
       width: 1.6875rem;
       height: 1.6875rem;
-      margin-left: 0.4375rem;
+      margin-left: 0;
       color: white;
       font-size: 0.75rem;
       font-weight: 800;

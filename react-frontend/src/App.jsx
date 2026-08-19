@@ -164,14 +164,15 @@ export default function App() {
             to="/"
             onClick={() => setActionError("")}
           >
-            New releases
+            <span className="nav-label">New releases</span>
           </NavLink>
           <NavLink
             className="nav-link"
             to="/watchlist"
             onClick={() => setActionError("")}
           >
-            Watchlist {watchlistMovieIds.length > 0
+            <span className="nav-label">Watchlist</span>
+            {watchlistMovieIds.length > 0
               ? <b>{watchlistMovieIds.length}</b>
               : null}
           </NavLink>

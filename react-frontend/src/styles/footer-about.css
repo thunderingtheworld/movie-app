@@ -67,6 +67,10 @@
       height: auto;
     }
 
+    .tmdb-logo-long {
+      display: none;
+    }
+
     h2 {
       margin: 0 0 0.5rem;
       color: white;
@@ -80,6 +84,37 @@
     }
   }
 }
+
+@media (max-width: 28rem) {
+  .about-page {
+    .tmdb-credit {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+      padding-top: 1.5rem;
+
+      > div {
+        grid-row: 1;
+      }
+
+      > a {
+        display: block;
+        grid-row: 2;
+      }
+
+      .tmdb-logo-stacked {
+        display: none;
+      }
+
+      .tmdb-logo-long {
+        display: block;
+        width: 100%;
+        max-width: 22rem;
+      }
+    }
+  }
+}
+
 @media (max-width: 25rem) {
   .about-page {
     padding-top: 3rem;
@@ -94,18 +129,5 @@
 @media (max-width: 23rem) {
   .about-page {
     width: calc(100% - 1.5rem);
-
-    .about-panel {
-      padding: 1.25rem;
-    }
-
-    .tmdb-credit {
-      grid-template-columns: 4.5rem 1fr;
-      gap: 1rem;
-
-      img {
-        width: 4.25rem;
-      }
-    }
   }
 }
