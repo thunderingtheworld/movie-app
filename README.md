@@ -18,7 +18,7 @@ Watchlists use anonymous users to avoid sign-in friction now, while preserving a
 
 ## Live demo and screenshots
 
-**[Live demo](https://movie-night-alpha-liart.vercel.app/)**
+### [Try Movie night live →](https://movie-night-alpha-liart.vercel.app/)
 
 ### New releases
 
