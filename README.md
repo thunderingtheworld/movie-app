@@ -34,33 +34,56 @@ Watchlists use anonymous users to avoid sign-in friction now, while preserving a
 
 ## Local setup
 
-Create the environment files:
+Create the backend environment file:
 
 ```bash
 cp flask-backend/.env.example flask-backend/.env
-cp react-frontend/.env.example react-frontend/.env
 ```
 
-Add your [The Movie Database (TMDB)](https://www.themoviedb.org) API read access token to `flask-backend/.env`. The example URLs already match the local development servers.
+Add your [The Movie Database (TMDB)](https://www.themoviedb.org) API read access token to `flask-backend/.env`. The example `FRONTEND_URL` already matches the local frontend server.
 
-Install the backend and frontend dependencies, then start each side in a separate terminal:
+No frontend environment file is required locally because the app defaults to `http://localhost:5000/api`.
+
+Install the backend dependencies:
 
 ```bash
-pip install -r flask-backend/requirements.txt
-npm --prefix react-frontend install
-bash start_backend.sh
-bash start_frontend.sh
+cd flask-backend
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+cd ..
 ```
 
+Install the frontend dependencies:
+
+```bash
+cd react-frontend
+npm install
+cd ..
+```
+
+Start the backend and frontend in separate terminals.
+
+Terminal 1:
+
+```bash
+bash start_backend.sh
+```
+
+Terminal 2:
+
+```bash
+bash start_frontend.sh
+```
 
 ## Deployment variables
 
 - Backend: `TMDB_TOKEN`, `FRONTEND_URL`, and `DATABASE_PATH`
 - Frontend: `VITE_API_URL`, including the `/api` path
 
-Set `FRONTEND_URL` to the deployed frontend origin and `VITE_API_URL` to the deployed Flask URL, for example `https://api.example.com/api`.
+Set `FRONTEND_URL` to the deployed frontend origin and `VITE_API_URL` to the deployed Flask URL, for example `https://api.example.com/api`. Configure `VITE_API_URL` only when overriding the local default, such as in the Vercel production environment.
 
-The optional `DATABASE_PATH` variable controls where Flask stores the SQLite database; locally it defaults to `flask-backend/instance/`. In production, point it to persistent writable storage.
+The optional `DATABASE_PATH` variable controls where Flask stores the SQLite database; locally it defaults to `flask-backend/instance/movie-app.sqlite3`. In production, point it to a persistent writable location such as `/data/movie-night.sqlite3`.
 
 Asset credits and licensing notes are in [`/react-frontend/public/ASSETS.md`](/react-frontend/public/ASSETS.md).
 
