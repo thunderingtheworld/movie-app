@@ -52,6 +52,23 @@
     }
   }
 
+  .github-link {
+    display: inline-flex;
+    gap: 0.4rem;
+    align-items: center;
+    margin-top: 1.25rem;
+    color: #acd9d4;
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-decoration: none;
+
+    &:hover {
+      color: var(--movie-cyan);
+      text-decoration: underline;
+      text-underline-offset: 0.25em;
+    }
+  }
+
   .tmdb-credit {
     display: grid;
     grid-template-columns: 7rem 1fr;

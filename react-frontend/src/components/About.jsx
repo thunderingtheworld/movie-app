@@ -9,6 +9,16 @@ export default function About() {
           new releases, saving a watchlist, and finding something worth watching.
         </p>
 
+        <a
+          className="github-link"
+          href="https://github.com/thunderingtheworld/movie-app"
+          target="_blank"
+          rel="noreferrer"
+        >
+          View source on GitHub
+          <span aria-hidden="true">↗</span>
+        </a>
+
         <div className="tmdb-credit">
           <a href="https://www.themoviedb.org" target="_blank" rel="noreferrer">
             <img
