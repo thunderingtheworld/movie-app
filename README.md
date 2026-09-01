@@ -62,4 +62,10 @@ Set `FRONTEND_URL` to the deployed frontend origin and `VITE_API_URL` to the dep
 
 The optional `DATABASE_PATH` variable controls where Flask stores the SQLite database; locally it defaults to `flask-backend/instance/`. In production, point it to persistent writable storage.
 
-Asset credits and licensing notes are in [`/react-frontend/public/ASSETS.md`](/react-frontend/public/ASSETS.md). 
+Asset credits and licensing notes are in [`/react-frontend/public/ASSETS.md`](/react-frontend/public/ASSETS.md).
+
+## Next steps
+
+- Migrate the React frontend from JavaScript to TypeScript
+- Add automated tests
+- Add CI
